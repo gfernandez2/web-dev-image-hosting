@@ -1,0 +1,18 @@
+{
+    // Unix Line endings
+    "files.eol": "\n",
+
+    // Auto rename HTML tags
+    "editor.linkedEditing": true,
+
+    // If you move a JS file, update the imports in other files
+    "javascript.updateImportsOnFileMove.enabled": "always",
+
+    // Colored brackets (makes things easier to edit)
+    "editor.bracketPairColorization.enabled": true,
+
+    // Tabstop settings
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+
+}
