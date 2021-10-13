@@ -6,12 +6,12 @@
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
 		"formulahendry.auto-rename-tag",
-		"ms-vscode.live-server",
 		"firefox-devtools.vscode-firefox-debug",
 		"naumovs.color-highlight",
 		"mkloubert.vscode-http-client",
 		"renatorodrigues.json-to-js",
-		"ms-vsliveshare.vsliveshare"
+		"ms-vsliveshare.vsliveshare",
+		"dsznajder.es7-react-js-snippets"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
