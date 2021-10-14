@@ -21,29 +21,35 @@
 # Brainstorming TODO list for Feature 4
 
 ## Refactor
-- [ ] Port PhotoLibrary components to React
+- [ ] Port PhotoLibrary components to React [`Gerry`]
 - [ ] Port existing CSS into CSS modules and separate by component (instead of
-one big file like before)
+one big file like before) [`Simon`]
     - [ ] Use a different CSS system (maybe SCSS or Styled Components?)
 
 ## Pages
-- [ ] Finish PhotoLibrary page
+- [ ] Finish PhotoLibrary page [`Simon & Gerry`]
     - [ ] Clicking on an image should expand the image like in the mockups
     - [ ] Image should have some actions that can be done with it (ideas below)
         - [ ] Copy link to image
         - [ ] Comment under image (idk about this one)
         - [ ] View image metadata (e.g. location? idk)
         - [ ] Add image name or description
-    - [ ] Set up routing to home page
-- [ ] Home Page
+- [ ] Route from Home to PhotoLibrary and Vice Versa [`Gerry`]
+- [ ] Home Page [`Gerry`]
     - [ ] Styling
     - [ ] Box that can be dragged over with images
 
 ## Backend
 - [ ] Design a database schema for the whole project (should do work upfront 
-because database is hard to modify in the future)
+because database is hard to modify in the future) [`Simon`]
     - [ ] Photo
     - [ ] User
+    - [ ] Photo Album
     - [ ] Come up with more
-- [ ] Port our existing data into Back4App
-- [ ] Write CRUD operations utilizing Back4App's API endpoints
+- [ ] Port our existing data into Back4App [`Simon`]
+- [ ] Write CRUD operations utilizing Back4App's API endpoints [`Simon`]
+
+## Misc
+- [ ] UML Diagram for the database [`Simon`]
+- [ ] Create GitHub release [`Gerry`]
+- [ ] Make `CHANGELOG.md` [`Gerry`]
