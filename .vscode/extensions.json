@@ -11,7 +11,8 @@
 		"mkloubert.vscode-http-client",
 		"renatorodrigues.json-to-js",
 		"ms-vsliveshare.vsliveshare",
-		"dsznajder.es7-react-js-snippets"
+		"dsznajder.es7-react-js-snippets",
+		"tomoki1207.pdf"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
