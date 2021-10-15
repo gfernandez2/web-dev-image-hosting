@@ -1,5 +1,4 @@
-import Parse from 'parse/node';
-import initParse from './initParse';
+import Parse from './initParse';
 
 interface Iimage {
     src: string
@@ -13,10 +12,7 @@ interface Ifolder {
 }
 
 /* GET Requests */
-
 export async function getIdFromUsername(username: string) {
-
-    initParse();
 
     const User = Parse.Object.extend('User');
     const query = new Parse.Query(User);
@@ -26,7 +22,6 @@ export async function getIdFromUsername(username: string) {
 }
 
 export async function getAllImages(): Promise<Iimage[]> {
-    initParse();
 
     const Photo = Parse.Object.extend('Photo');
     const query = new Parse.Query(Photo);
@@ -49,8 +44,6 @@ export async function getImageByUser(
 }
 
 export async function getImagesByUser(username: string): Promise<Iimage[]> {
-
-    initParse();
 
     const idQuery = await getIdFromUsername(username);
 

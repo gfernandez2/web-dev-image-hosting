@@ -1,16 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { XMLHttpRequest } from 'xmlhttprequest';
-import { LocalStorage } from 'node-localstorage';
-
 import { getImagesByUser } from './imageServices';
-  
-beforeAll(() => {
-    global.localStorage = new LocalStorage('./scratch');
-    global.XMLHttpRequest = XMLHttpRequest;
-});
-
-
 
 describe('GET image tests', () => {
 
