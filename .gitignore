@@ -3,6 +3,9 @@
 # Environment variables
 .env
 
+# Scratch space for some tests
+/scratch
+
 # dependencies
 /node_modules
 /.pnp
