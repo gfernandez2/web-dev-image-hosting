@@ -1,26 +1,11 @@
 import Parse from './initParse';
 
-interface Iimage {
+export interface Iimage {
     src: string
     alt: string
 }
 
-interface Ifolder {
-    name  : string,
-    desc ?: string,
-    imgs  : Iimage[]
-}
-
 /* GET Requests */
-export async function getIdFromUsername(username: string) {
-
-    const User = Parse.Object.extend('User');
-    const query = new Parse.Query(User);
-    query.equalTo('username', username);
-
-    return query;
-}
-
 export async function getAllImages(): Promise<Iimage[]> {
 
     const Photo = Parse.Object.extend('Photo');
@@ -28,52 +13,82 @@ export async function getAllImages(): Promise<Iimage[]> {
     
     const data = await query.find();
 
-    console.log(data.length);
-
     const images = data.map(elem => { return {
         src: elem.get('imageSrc')._url,
-        alt: elem.get('imageDesc') || 'An image'
+        alt: elem.get('imageDesc') || ''
     };});
 
     return images;
+}
+
+export async function getIdFromUsername(username: string): Promise<string> {
+
+    const query = new Parse.Query(Parse.User);
+    query.equalTo('username', username);
+
+    const data = await query.find();
+
+    if (data[0] === undefined || data[0].id === undefined)
+        throw new Error('That particular user could not be found in the database!');
+
+    return data[0].id;
 }
 
 export async function getImageByUser(
     username: string, imageId: string): Promise<Iimage> {
-    throw new Error('Not yet implemented');
+
+    const id = await getIdFromUsername(username);
+    const Photo = Parse.Object.extend('Photo');
+    const query = new Parse.Query(Photo);
+    query.equalTo('user', {'__type': 'Pointer', 'className': '_User', 'objectId': id});
+
+    const result = await query.get(imageId);
+
+    if (!result) {
+        throw new Error('The image with that specific ID could not be found or\
+         the image might not belong to you!');
+    }
+
+    return {
+        src: result.get('imageSrc')._url,
+        alt: result.get('image') || ''
+    };
+
 }
 
 export async function getImagesByUser(username: string): Promise<Iimage[]> {
 
-    const idQuery = await getIdFromUsername(username);
-
+    const id = await getIdFromUsername(username);
     const Photo = Parse.Object.extend('Photo');
+
     const query = new Parse.Query(Photo);
-    // query.matchesKeyInQuery('user', 'belongsTo.user', idQuery);
+    // https://designingforscale.com/query-on-a-parse-pointer/
+    query.equalTo('user', {'__type': 'Pointer', 'className': '_User', 'objectId': id});
     
     const data = await query.find();
 
-    console.log(data.length);
-
-    const images = data.map(elem => { return {
+    return data.map(elem => { return {
         src: elem.get('imageSrc')._url,
-        alt: elem.get('imageDesc') || 'An image'
+        alt: elem.get('imageDesc') || ''
     };});
-
-    return images;
-
-}
-
-export async function getFoldersByUser(username: string): Promise<Ifolder[]> {
-
-    throw new Error('Not yet implemented');
 }
 
 /* POST Requests */
 export async function postImageByUser(
-    username: string, image: File): Promise<Iimage> {
+    username: string, image: File): Promise<void> {
 
-    throw new Error('Not yet implemented');
+    // Get some required data
+    const id = getIdFromUsername(username);
+    const parseFile = new Parse.File(image.name, image);
+
+    // Set properties
+    const photo = new Parse.Object('Photo');
+    photo.set('imageSrc', parseFile);
+    photo.set('imageDesc', undefined);
+    photo.set('folder', undefined);
+    photo.set('user', {'__type': 'Pointer', 'className': '_User', 'objectId': await id});
+
+    await photo.save();
 }
 
 /* PUT Requests */
@@ -83,12 +98,6 @@ export async function putImageByUser(
     field: string, 
     content: string
 ): Promise<Iimage> {
-
-    throw new Error('Not yet implemented');
-}
-
-export async function putImageInFolder(
-    username: string, folderId: string, imageId: string): Promise<boolean> {
 
     throw new Error('Not yet implemented');
 }
