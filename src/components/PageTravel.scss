@@ -1,0 +1,28 @@
+@use '../base';
+
+.PageTravel {
+
+    /* Position the button in the center of the header */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    height: 3em;
+    width: 3em;
+
+    background-color: base.$color-background-dark;
+    border-radius: 50%;
+    cursor: pointer;
+
+    svg {
+        color: white;
+
+        /* Position the SVG in the center of the button */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+}
