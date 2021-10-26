@@ -5,8 +5,10 @@ import ImageGrid from './ImageGrid';
 import LibraryHeader from '../../components/LibraryHeader';
 
 // Services
-//import { getImagesByUser, postImageByUser } from '../services/imageServices.js';
-//import { getFullName } from '../services/userServices.js';
+import { getImagesByUser, postImageByUser } from '../../services/imageServices';
+import { getFullName } from '../../services/userServices';
+
+import './PhotoLibrary.scss';
 
 // Just hardcoded the default user for now. later when we implement
 // authentication, the default user will be a guest
@@ -33,14 +35,15 @@ const PhotoLibrary = () => {
     useEffect(() => {
         (async () => {
             const imgList = await getImagesByUser(currUser);
-            setImages(imgList);
+            console.log(imgList);
+            setImages(imgList as any);
         })();
     }, [currUser]);
 
     /* Event Listeners */
 
     // When the user chooses to upload a file
-    const fileInputChange = async (e) => {
+    const fileInputChange = async (e: any) => {
         const files = e.target.files;
         
         const newImages = [];
@@ -81,6 +84,8 @@ const PhotoLibrary = () => {
 
         alert('We are planning to implement a detail view for the image, for now, we will just copy the image to your clipboard!'); 
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const image = e.target.src;
         navigator.clipboard.writeText(image);
     };

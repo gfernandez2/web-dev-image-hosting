@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './Profile.scss';
+
 type profileProps = {
     userFullName : string;
     onClick : (e : any) => void;

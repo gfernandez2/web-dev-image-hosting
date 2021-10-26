@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 
+import './UploadButton.scss';
+
 type uploadProps = {
     onChange : (e : any) => void;
     children : string;
@@ -28,7 +30,7 @@ const UploadButton = ({ onChange, children } : uploadProps) => {
             <button
                 onClick={uploadButtonClick}
             >
-                ${children}
+                {children}
             </button>
         </div>
     );

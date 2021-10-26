@@ -1,6 +1,8 @@
 import React from 'react';
 
-import ImageItem from './ImageItem.js';
+import './ImageGrid.scss';
+
+import ImageItem from './ImageItem';
 
 import { Iimage } from '../../services/imageServices';
 

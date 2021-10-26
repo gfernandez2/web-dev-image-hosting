@@ -58,14 +58,21 @@ export async function getImageByUser(
 
 export async function getImagesByUser(username: string): Promise<Iimage[]> {
 
-    const id = await getIdFromUsername(username);
+
+    const id = getIdFromUsername(username);
     const Photo = Parse.Object.extend('Photo');
 
     const query = new Parse.Query(Photo);
+
+    const user = new Parse.User();
+    user.id = (await id);
+    query.equalTo('user', user);
     // https://designingforscale.com/query-on-a-parse-pointer/
-    query.equalTo('user', {'__type': 'Pointer', 'className': '_User', 'objectId': id});
+    // query.equalTo('user', { '__type': 'Pointer', 'className': '_User', 'objectId': await id });
     
     const data = await query.find();
+
+    console.log(user);
 
     return data.map(elem => { return {
         src: elem.get('imageSrc')._url,

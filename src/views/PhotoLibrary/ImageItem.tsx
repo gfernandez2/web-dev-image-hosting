@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './ImageItem.scss';
+
 type itemProps = {
     src : string;
     alt : string;

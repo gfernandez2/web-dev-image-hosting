@@ -9,13 +9,14 @@ dotenv.config();
 // https://stackoverflow.com/a/34550964
 const parseObj = (typeof window === 'undefined') ? NodeParse : Parse;
 
-const parseId = process.env.PARSE_APP_ID;
-const jsId    = process.env.PARSE_JS_KEY;
+const parseId = process.env.REACT_APP_PARSE_APP_ID;
+const jsId    = process.env.REACT_APP_PARSE_JS_KEY;
 
 if (parseId && jsId) {
     parseObj.initialize(parseId, jsId);
     parseObj.serverURL = 'https://parseapi.back4app.com/';
 } else {
+    console.log(process.env);
     throw new Error('Parse environment variables not initialized!! Did you make a .env?');
 }
 

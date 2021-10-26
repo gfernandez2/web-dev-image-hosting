@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './PageTravel.scss';
+
 type travelProps = {
     onClick : (e : any) => void;
 }
