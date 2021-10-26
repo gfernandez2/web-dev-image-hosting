@@ -1,0 +1,66 @@
+@use '../base';
+
+.Profile {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+
+    /* Display flex so that they're in a horizontal list */
+    display: flex;
+
+    /* Align the text vertically with the picture */
+    align-items: center;
+
+    margin-right: 1em;
+    cursor: pointer;
+
+    border-radius: base.$border-radius-small;
+    padding: 0.5em;
+
+    transition: background-color, 150ms ease-in;
+
+    :hover {
+        background-color: base.$color-background-dark;
+    }
+
+    p {
+        font-family: base.$font-secondary;
+    }
+
+    .profile-picture {
+        /* We will be using position absolute on the SVG below, so use relative here */
+        position: relative;
+        
+        height: 3em;
+        width: 3em;
+        margin-left: 0.7em;
+        background-color: base.$color-background-dark;
+
+        /* Makes it a circle */
+        border-radius: 50%;
+
+        svg {
+            /* Centers it */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        svg, p {
+            color: white;
+        }
+    }
+
+}
+
+/* Phone Size */
+@media screen and (max-width: 480px) {
+    /* Don't display the firstname and lastname because it won't fit */
+    .Profile p {
+        display: none;
+    }
+
+
+}

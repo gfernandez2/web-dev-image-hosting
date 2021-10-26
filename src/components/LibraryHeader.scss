@@ -1,0 +1,13 @@
+@use '../base';
+
+.LibraryHeader {
+    /* Allows the header to travel with you as you scroll */
+    position: sticky;
+    top: 0;
+    left: 0;
+    height: 5em;
+    width: 100%;
+
+    background-color: base.$color-background-light;
+    border-radius: 0 0 base.$border-radius-normal base.$border-radius-normal;
+}

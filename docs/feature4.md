@@ -50,6 +50,6 @@ because database is hard to modify in the future) [`Simon`]
 - [ ] Write CRUD operations utilizing Back4App's API endpoints [`Simon`]
 
 ## Misc
-- [ ] UML Diagram for the database [`Simon`]
+- [x] UML Diagram for the database [`Simon`]
 - [ ] Create GitHub release [`Gerry`]
 - [ ] Make `CHANGELOG.md` [`Gerry`]

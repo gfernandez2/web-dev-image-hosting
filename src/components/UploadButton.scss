@@ -1,0 +1,36 @@
+@use '../base';
+
+.UploadButton button {
+
+    button {
+        /* Center the button vertically in the header */
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        font-family: base.$font-primary;
+
+        height: 1.7em;
+        width: 4em;
+
+        margin: 0 1em;
+
+        background-color: base.$color-accent;
+        border: none;
+        color: white;
+        border-radius: base.$border-radius-normal;
+        font-size: 24px;
+        cursor: pointer;
+
+        transition: background-color, 150ms ease-in;
+    }
+
+    button:hover {
+        background-color: #ff587f;
+    }
+
+    input {
+        display: none;
+    }
+
+}
