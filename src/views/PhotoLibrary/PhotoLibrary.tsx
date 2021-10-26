@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 
 // Components
-import ImageGrid from './ImageGrid.js';
-import LibraryHeader from './LibraryHeader.js';
-import SelectedImageInfo from './SelectedImageInfo.js';
+import ImageGrid from './ImageGrid';
+import LibraryHeader from '../../components/LibraryHeader';
 
 // Services
 //import { getImagesByUser, postImageByUser } from '../services/imageServices.js';
@@ -89,13 +88,13 @@ const PhotoLibrary = () => {
     /* Component */
     return (
         <div className="PhotoLibrary">
-            <{LibraryHeader}
+            <LibraryHeader
                 userFullName={userFullName} 
                 fileInputChange={fileInputChange} 
                 pageTravelClick={pageTravelClick}
                 profileClick={profileClick}
             />
-            <{ImageGrid} images={images} imageOnClick={imageClick}/>
+            <ImageGrid images={images} imageOnClick={imageClick}/>
         </div>
     );
 };

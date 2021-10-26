@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 
 type uploadProps = {
     onChange : (e : any) => void;
@@ -10,6 +10,8 @@ const UploadButton = ({ onChange, children } : uploadProps) => {
     const fileRef = useRef(null);
     
     const uploadButtonClick = (e : any) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         fileRef.current.click();
     };
 

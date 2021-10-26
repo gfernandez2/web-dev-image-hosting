@@ -1,8 +1,10 @@
 import React from 'react';
 
-import UploadButton from './UploadButton';
-import PageTravel from './PageTravel';
-import Profile from './Profile';
+import './LibraryHeader.scss';
+
+import UploadButton from '../components/UploadButton';
+import PageTravel from '../components/PageTravel';
+import Profile from '../components/Profile';
 
 type headerProps = {
     userFullName : string;
@@ -15,14 +17,14 @@ const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profile
     
     return (
         <header className="LibraryHeader">
-            <{UploadButton}
+            <UploadButton
                 onChange={fileInputChange}
             >
                 Upload
-            </{UploadButton}>
+            </UploadButton>
 
-            <{PageTravel} onClick={pageTravelClick}/>
-            <{Profile} userFullName={userFullName} onClick={profileClick} />
+            <PageTravel onClick={pageTravelClick}/>
+            <Profile userFullName={userFullName} onClick={profileClick} />
         </header>
     );
 
