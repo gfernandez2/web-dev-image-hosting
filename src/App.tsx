@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 // Components
@@ -17,7 +17,6 @@ const App = () => {
     
     /* State */
     const [ currUser, setCurrUser ] = useState(DEFAULT_CURRENT_USER);
-
     const [ userFullName, setUserFullName ] = useState('');
 
     // Update the user's full name when the currUser changes
@@ -81,6 +80,7 @@ const App = () => {
                             images={images}
                         />
                     </Route>
+
                     <Route path="/">
                         <HomePage
                             userFullName={userFullName} 

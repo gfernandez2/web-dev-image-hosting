@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import './UploadArea.scss';
+import '../styles/UploadArea.scss';
 
 type uploadProps = {
     onChange : (e : any) => void;

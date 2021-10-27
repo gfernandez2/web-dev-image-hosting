@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './Profile.scss';
+import '../styles/Profile.scss';
 
 type profileProps = {
     userFullName : string;

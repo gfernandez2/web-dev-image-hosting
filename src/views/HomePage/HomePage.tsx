@@ -9,6 +9,8 @@ import PageTravel from '../../components/PageTravel';
 // Services
 import { Iimage } from '../../services/imageServices';
 
+import { ChevronDown } from 'react-feather';
+
 import './HomePage.scss';
 
 type homeProps = {
@@ -39,7 +41,9 @@ const HomePage = ({userFullName, fileInputChange, profileClick, images} : homePr
             <UploadArea onChange={fileInputChange}>
                 Click or drag onto this box to upload your image
             </UploadArea>
-            <PageTravel onClick={pageTravelClick} />
+            <PageTravel id="travel-down" onClick={pageTravelClick}>
+                <ChevronDown />
+            </PageTravel>
         </div>
     );
 };
