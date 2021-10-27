@@ -1,5 +1,13 @@
 @use '../../base';
 
 :root {
-    background-color: base.$color-background-dark;
+    background-color: base.$color-background-light;
+}
+
+.PageTravel {
+    /* Position the button in the center of the header */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

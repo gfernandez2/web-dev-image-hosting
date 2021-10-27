@@ -21,7 +21,7 @@
     transition: background-color, 150ms ease-in;
 
     :hover {
-        background-color: base.$color-background-dark;
+        background-color: base.$color-background-light;
     }
 
     p {
@@ -35,7 +35,7 @@
         height: 3em;
         width: 3em;
         margin-left: 0.7em;
-        background-color: base.$color-background-dark;
+        background-color: base.$color-background-light;
 
         /* Makes it a circle */
         border-radius: 50%;
