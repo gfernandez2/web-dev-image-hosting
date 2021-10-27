@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
-import './ImageItem.scss';
+import './../../styles/ImageItem.scss';
 
 type itemProps = {
     src : string;
     alt : string;
-    onClick : (e : any) => void;
+    onClick : MouseEventHandler<HTMLElement>;
 }
 
-const ImageItem = ({ src, alt, onClick } : itemProps) => {
+const ImageItem = ({ src, alt, onClick }: itemProps): JSX.Element => {
     return (
         <article className="ImageItem" onClick={onClick}>
             <img src={src} alt={alt} />

@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 // Components
-import HomePage from './views/HomePage/HomePage';
-import PhotoLibrary from './views/PhotoLibrary/PhotoLibrary';
+import HomePage from './components/HomePage/HomePage';
+import PhotoLibrary from './components/PhotoLibrary/PhotoLibrary';
 
 // Services
-import { getImagesByUser, postImageByUser } from './services/imageServices';
+import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
 import { getFullName } from './services/userServices';
 
 // Just hardcoded the default user for now. later when we implement
 // authentication, the default user will be a guest
 const DEFAULT_CURRENT_USER = 'gfernan2';
 
-const App = () => {
+const App = (): JSX.Element => {
     
     /* State */
     const [ currUser, setCurrUser ] = useState(DEFAULT_CURRENT_USER);
@@ -27,24 +27,27 @@ const App = () => {
         })();
     }, [currUser]);
 
-    const [ images, setImages ] = useState([]);
+    const [ images, setImages ] = useState<Iimage[]>([]);
 
     // Update the images on the page when the currUser changes
     useEffect(() => {
         (async () => {
             const imgList = await getImagesByUser(currUser);
-            console.log(imgList);
-            setImages(imgList as any);
+            setImages(imgList);
         })();
     }, [currUser]);
 
     /* Event Listeners */
 
     // When the user chooses to upload a file
-    const fileInputChange = async (e: any) => {
+    const fileInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
-        
         const newImages = [];
+
+        if (!files) return;
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         for (const file of files) {
             /**
              * NOTE: For now, we pass the file to the service but ignore the
@@ -55,7 +58,7 @@ const App = () => {
             newImages.push(newImage);
         }  
         // Update the images state
-        setImages([...images, ...newImages] as any);
+        setImages([...images, ...newImages] );
     };
 
     // Changes the current user when you click on the profile
@@ -86,7 +89,6 @@ const App = () => {
                             userFullName={userFullName} 
                             fileInputChange={fileInputChange}
                             profileClick={profileClick}
-                            images={images}
                         />
                     </Route>
                 </Switch>

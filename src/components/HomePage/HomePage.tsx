@@ -1,27 +1,23 @@
-import React from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { ChangeEvent } from 'react';
+import { useHistory } from 'react-router-dom';
 
 // Components
-import Profile from '../../components/Profile';
-import UploadArea from '../../components/UploadArea';
-import PageTravel from '../../components/PageTravel';
+import Profile from '../Profile';
+import UploadArea from '../UploadArea';
+import PageTravel from '../PageTravel';
 
 // Services
-import { Iimage } from '../../services/imageServices';
-
 import { ChevronDown } from 'react-feather';
 
-import './HomePage.scss';
+import '../../styles/HomePage.scss';
 
 type homeProps = {
     userFullName : string;
-    fileInputChange : (e : any) => void;
- //   pageTravelClick : () => void;
+    fileInputChange : (e : ChangeEvent<HTMLInputElement>) => void;
     profileClick : () => void;
-    images : Iimage[];
 }
 
-const HomePage = ({userFullName, fileInputChange, profileClick, images} : homeProps) => {
+const HomePage = ({userFullName, fileInputChange, profileClick} : homeProps): JSX.Element => {
     
     const history = useHistory();
 

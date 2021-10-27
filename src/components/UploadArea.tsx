@@ -1,17 +1,17 @@
-import React, { useRef } from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 
 import '../styles/UploadArea.scss';
 
 type uploadProps = {
-    onChange : (e : any) => void;
+    onChange : (e : ChangeEvent<HTMLInputElement>) => void;
     children : string;
 }
 
-const UploadArea = ({ onChange, children } : uploadProps) => {
+const UploadArea = ({ onChange, children } : uploadProps): JSX.Element => {
 
     const fileRef = useRef(null);
     
-    const uploadButtonClick = (e : any) => {
+    const uploadButtonClick = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         fileRef.current.click();

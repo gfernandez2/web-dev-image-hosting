@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './ImageGrid.scss';
+import '../../styles/ImageGrid.scss';
 
 import ImageItem from './ImageItem';
 
@@ -11,7 +11,7 @@ type gridProps = {
     imageOnClick: (e : React.MouseEvent<HTMLImageElement>) => void;
 }
 
-const ImageGrid = ({ images, imageOnClick }: gridProps) => {
+const ImageGrid = ({ images, imageOnClick }: gridProps): JSX.Element => {
 
     return (
         <section className="ImageGrid">

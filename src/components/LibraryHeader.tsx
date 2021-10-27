@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, MouseEventHandler } from 'react';
 
 import '../styles/LibraryHeader.scss';
 
@@ -9,12 +9,12 @@ import { ChevronUp } from 'react-feather';
 
 type headerProps = {
     userFullName : string;
-    fileInputChange : (e : any) => void;
-    pageTravelClick : (e : any) => void;
-    profileClick : (e : any) => void;
+    fileInputChange : (e : ChangeEvent<HTMLInputElement>) => Promise<void>;
+    pageTravelClick : MouseEventHandler
+    profileClick : MouseEventHandler<HTMLDivElement>;
 }
 
-const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profileClick } : headerProps) => {
+const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profileClick } : headerProps): JSX.Element => {
     
     return (
         <header className="LibraryHeader">

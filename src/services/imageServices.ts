@@ -72,8 +72,6 @@ export async function getImagesByUser(username: string): Promise<Iimage[]> {
     
     const data = await query.find();
 
-    console.log(user);
-
     return data.map(elem => { return {
         src: elem.get('imageSrc')._url,
         alt: elem.get('imageDesc') || ''
@@ -82,7 +80,7 @@ export async function getImagesByUser(username: string): Promise<Iimage[]> {
 
 /* POST Requests */
 export async function postImageByUser(
-    username: string, image: File): Promise<void> {
+    username: string, image: File): Promise<Iimage> {
 
     // Get some required data
     const id = getIdFromUsername(username);
@@ -96,23 +94,25 @@ export async function postImageByUser(
     photo.set('user', {'__type': 'Pointer', 'className': '_User', 'objectId': await id});
 
     await photo.save();
+
+    return {src: parseFile._url, alt: ''};
 }
 
 /* PUT Requests */
-export async function putImageByUser(
-    username: string, 
-    imageId: string, 
-    field: string, 
-    content: string
-): Promise<Iimage> {
+// export async function putImageByUser(
+//     username: string, 
+//     imageId: string, 
+//     field: string, 
+//     content: string
+// ): Promise<Iimage> {
 
-    throw new Error('Not yet implemented');
-}
+//     throw new Error('Not yet implemented');
+// }
 
-/* DELETE Requests */
-export async function deleteImageByUser(
-    username: string, imageId: string): Promise<boolean> {
+// /* DELETE Requests */
+// export async function deleteImageByUser(
+//     username: string, imageId: string): Promise<boolean> {
     
     
-    throw new Error('Not yet implemented');
-}
+//     throw new Error('Not yet implemented');
+// }
