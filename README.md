@@ -26,6 +26,14 @@ back out of a folder into the original view.
 
 You can click on an image to copy it to your clipboard.
 
+# Diagrams
+
+## UML Diagram
+![uml](docs/UML_Diagram.png)
+
+## Component Tree
+![component-tree](docs/ComponentTreeDiagram.png)
+
 # Environment Variables
 To run the program, you need to make sure you set the correct environment
 variables. The easiest way to do this is to create a `.env` file. We've
