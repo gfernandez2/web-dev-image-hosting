@@ -1,11 +1,11 @@
 import React, { ChangeEvent, MouseEventHandler } from 'react';
+import { ChevronUp } from 'react-feather';
 
 import '../styles/LibraryHeader.scss';
 
 import UploadButton from '../components/UploadButton';
 import PageTravel from '../components/PageTravel';
 import Profile from '../components/Profile';
-import { ChevronUp } from 'react-feather';
 
 type headerProps = {
     userFullName : string;

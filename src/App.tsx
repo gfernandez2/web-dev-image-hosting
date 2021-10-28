@@ -7,7 +7,9 @@ import PhotoLibrary from './components/PhotoLibrary/PhotoLibrary';
 
 // Services
 import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
+import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
 import { getFullName } from './services/userServices';
+
 
 // Just hardcoded the default user for now. later when we implement
 // authentication, the default user will be a guest
@@ -18,6 +20,8 @@ const App = (): JSX.Element => {
     /* State */
     const [ currUser, setCurrUser ] = useState(DEFAULT_CURRENT_USER);
     const [ userFullName, setUserFullName ] = useState('');
+    const [ images, setImages ] = useState<Iimage[]>([]);
+    const [ folders, setFolders ] = useState<Ifolder[]>([]);
 
     // Update the user's full name when the currUser changes
     useEffect(() => {
@@ -27,8 +31,6 @@ const App = (): JSX.Element => {
         })();
     }, [currUser]);
 
-    const [ images, setImages ] = useState<Iimage[]>([]);
-
     // Update the images on the page when the currUser changes
     useEffect(() => {
         (async () => {
@@ -37,7 +39,24 @@ const App = (): JSX.Element => {
         })();
     }, [currUser]);
 
+    useEffect(() => {
+        (async () => {
+            const folders = await getFoldersByUser(currUser);
+            setFolders(folders);
+        })();
+    }, [currUser, images]);
+
     /* Event Listeners */
+
+    const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
+        (async () => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const folderId = e.target.id;
+            const newImages = await getImagesFromFolder(currUser, folderId);
+            setImages(newImages);
+        })();
+    };
 
     // When the user chooses to upload a file
     const fileInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,12 +82,17 @@ const App = (): JSX.Element => {
 
     // Changes the current user when you click on the profile
     const profileClick = () => {
-        alert('For feature 4 we will implement full user authentication. But for now, this button will just switch users between Gerry and Simon');
+        alert('For feature 5 we will implement full user authentication. But for now, this button will just switch users between Gerry and Simon');
 
         if (currUser === 'srodrig9')
             setCurrUser('gfernan2');
         else
             setCurrUser('srodrig9');
+    };
+
+    const headerClick = async () => {
+        const imgs = await getImagesByUser(currUser);
+        setImages(imgs);
     };
 
     return (
@@ -80,7 +104,10 @@ const App = (): JSX.Element => {
                             userFullName={userFullName} 
                             fileInputChange={fileInputChange}
                             profileClick={profileClick}
+                            folderClick={folderClick}
+                            headerClick={headerClick}
                             images={images}
+                            folders={folders}
                         />
                     </Route>
 

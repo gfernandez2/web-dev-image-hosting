@@ -1,5 +1,8 @@
 import Parse from './initParse';
 
+import { getIdFromUsername } from './userServices';
+
+// The interface for an image
 export interface Iimage {
     src: string
     alt: string
@@ -11,8 +14,10 @@ export async function getAllImages(): Promise<Iimage[]> {
     const Photo = Parse.Object.extend('Photo');
     const query = new Parse.Query(Photo);
     
+    // query with no filter
     const data = await query.find();
 
+    // return in Iimage format
     const images = data.map(elem => { return {
         src: elem.get('imageSrc')._url,
         alt: elem.get('imageDesc') || ''
@@ -21,26 +26,18 @@ export async function getAllImages(): Promise<Iimage[]> {
     return images;
 }
 
-export async function getIdFromUsername(username: string): Promise<string> {
-
-    const query = new Parse.Query(Parse.User);
-    query.equalTo('username', username);
-
-    const data = await query.find();
-
-    if (data[0] === undefined || data[0].id === undefined)
-        throw new Error('That particular user could not be found in the database!');
-
-    return data[0].id;
-}
-
 export async function getImageByUser(
     username: string, imageId: string): Promise<Iimage> {
 
     const id = await getIdFromUsername(username);
+
     const Photo = Parse.Object.extend('Photo');
     const query = new Parse.Query(Photo);
-    query.equalTo('user', {'__type': 'Pointer', 'className': '_User', 'objectId': id});
+
+    const user = new Parse.User();
+    user.id = id;
+
+    query.equalTo('user', user);
 
     const result = await query.get(imageId);
 
@@ -59,19 +56,25 @@ export async function getImageByUser(
 export async function getImagesByUser(username: string): Promise<Iimage[]> {
 
 
+    // get the ID
     const id = getIdFromUsername(username);
     const Photo = Parse.Object.extend('Photo');
 
     const query = new Parse.Query(Photo);
 
+    // Create the user we wish to filter against
     const user = new Parse.User();
     user.id = (await id);
+
+    // Find images that only belong to that user
     query.equalTo('user', user);
-    // https://designingforscale.com/query-on-a-parse-pointer/
-    // query.equalTo('user', { '__type': 'Pointer', 'className': '_User', 'objectId': await id });
+
+    // find images that aren't in a folder
+    query.equalTo('folder', undefined);
     
     const data = await query.find();
 
+    // Return data in Iimage format
     return data.map(elem => { return {
         src: elem.get('imageSrc')._url,
         alt: elem.get('imageDesc') || ''
@@ -87,7 +90,9 @@ export async function postImageByUser(
     const parseFile = new Parse.File(image.name, image);
 
     // Set properties
-    const photo = new Parse.Object('Photo');
+    const Photo = Parse.Object.extend('Photo');
+    const photo = new Photo();
+
     photo.set('imageSrc', parseFile);
     photo.set('imageDesc', undefined);
     photo.set('folder', undefined);
