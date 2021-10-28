@@ -2,9 +2,9 @@ import React from 'react';
 
 import '../../styles/ImageGrid.scss';
 
-import ImageItem from './ImageItem';
-
 import { Iimage } from '../../services/imageServices';
+
+import ImageItem from './ImageItem';
 
 type gridProps = {
     images: Iimage[],

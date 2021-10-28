@@ -16,7 +16,6 @@ if (parseId && jsId) {
     parseObj.initialize(parseId, jsId);
     parseObj.serverURL = 'https://parseapi.back4app.com/';
 } else {
-    console.log(process.env);
     throw new Error('Parse environment variables not initialized!! Did you make a .env?');
 }
 

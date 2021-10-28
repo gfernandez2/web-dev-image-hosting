@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 // Components
 import Profile from '../Profile';
-import UploadArea from '../UploadArea';
+import UploadArea from './UploadArea';
 import PageTravel from '../PageTravel';
 
 // Services
@@ -35,7 +35,7 @@ const HomePage = ({userFullName, fileInputChange, profileClick} : homeProps): JS
                 <Profile userFullName={userFullName} onClick={profileClick} />
             </div>
             <UploadArea onChange={fileInputChange}>
-                Click or drag onto this box to upload your image
+                Click this box to upload an image
             </UploadArea>
             <PageTravel id="travel-down" onClick={pageTravelClick}>
                 <ChevronDown />

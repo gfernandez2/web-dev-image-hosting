@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 
-import './../../styles/ImageItem.scss';
+import '../../styles/ImageItem.scss';
 
 type itemProps = {
     src : string;

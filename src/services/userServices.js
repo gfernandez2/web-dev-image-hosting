@@ -1,5 +1,6 @@
-// Requests full name from username
+import Parse from './initParse';
 
+// Requests full name from username
 export async function getFullName(username) {
     // const resp = await axios.get('./services/data.json');
     // const user = resp.data.users[username];
@@ -16,8 +17,10 @@ export async function getFullName(username) {
 
 }
 
+// Gets the id from the username, which is used throughout the app
 export async function getIdFromUsername(username) {
 
+    // Query against the 'username' field
     const query = new Parse.Query(Parse.User);
     query.equalTo('username', username);
 
@@ -26,5 +29,6 @@ export async function getIdFromUsername(username) {
     if (data[0] === undefined || data[0].id === undefined)
         throw new Error('That particular user could not be found in the database!');
 
+    // return the built in id property
     return data[0].id;
 }
