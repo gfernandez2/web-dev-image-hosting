@@ -1,0 +1,20 @@
+// Import fonts
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;700&family=Lato:wght@400;700&display=swap');
+
+// Some variables we use throughout the project
+$color-background-dark: #181327;
+$color-background-light: #271F3F;
+$color-accent: #FF003D;
+
+$border-radius-normal: 8px;
+$border-radius-small: 4px;
+
+$font-primary: 'Lato', sans-serif;
+$font-secondary: 'Karla', sans-serif;
+
+// Some default styles
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

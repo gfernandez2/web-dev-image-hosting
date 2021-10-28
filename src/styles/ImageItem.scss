@@ -1,0 +1,16 @@
+@use 'base';
+
+.ImageItem {
+    width: 200px;
+    height: 200px;
+
+    img {
+        height: 100%;
+        width: 100%;
+
+        /* Crop the image to the squrare */
+        object-fit: cover;
+
+        border-radius: base.$border-radius-small;
+    }
+}

@@ -1,0 +1,19 @@
+@use 'base';
+
+.folder-container {
+    
+    display: flex;
+    flex-direction: row;
+    margin: 0.5em 1.5em 0 1.5em; 
+
+    li {
+        color: base.$color-accent;    
+        margin-left: 0.5em;
+        font-size: 2rem;
+        font-family: base.$font-secondary;  
+        list-style: none;
+        text-decoration: underline;
+        cursor: pointer;
+        font-weight: bold;
+    }
+}

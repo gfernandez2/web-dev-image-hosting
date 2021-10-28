@@ -1,0 +1,26 @@
+@use 'base';
+
+:root {
+    background-color: base.$color-background-light;
+}
+
+.PhotoLibrary {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    h1 {
+        color: white;
+        font-family: base.$font-primary;
+        margin: 0.2em;
+        cursor: pointer;
+    }
+}
+
+#travel-up {
+    /* Position the button in the center of the header */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
