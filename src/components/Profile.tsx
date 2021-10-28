@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
-import './Profile.scss';
+import '../styles/Profile.scss';
 
 type profileProps = {
     userFullName : string;
-    onClick : (e : any) => void;
+    onClick : MouseEventHandler;
 }
 
-const Profile = ({ userFullName, onClick } : profileProps) => {
+const Profile = ({ userFullName, onClick } : profileProps): JSX.Element => {
     return (
         <div className="Profile" onClick={onClick}>
             <p>{userFullName}</p>

@@ -1,20 +1,21 @@
-import React, { useRef } from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 
-import './UploadButton.scss';
+import '../styles/UploadButton.scss';
 
 type uploadProps = {
-    onChange : (e : any) => void;
+    onChange : (e : ChangeEvent<HTMLInputElement>) => Promise<void>;
     children : string;
 }
 
-const UploadButton = ({ onChange, children } : uploadProps) => {
+const UploadButton = ({ onChange, children } : uploadProps): JSX.Element => {
 
-    const fileRef = useRef(null);
+    const fileRef = useRef<HTMLInputElement>(null);
     
-    const uploadButtonClick = (e : any) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        fileRef.current.click();
+    const uploadButtonClick = () => {
+        if (fileRef != null && fileRef.current != null) {
+            fileRef.current.click();
+
+        }
     };
 
     return (

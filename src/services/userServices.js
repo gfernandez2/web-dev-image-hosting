@@ -1,20 +1,18 @@
-import axios from 'axios';
-import Parse from './initParse';
+// Requests full name from username
 
 export async function getFullName(username) {
     // const resp = await axios.get('./services/data.json');
     // const user = resp.data.users[username];
     // return {first_name : user.first_name, last_name : user.last_name};
 
-    /**
-     * TODO: Implement for Feature 5
-     *      For now just implemented two users, this will be a service like 
-     *      the others
-     */
-    if (username == 'srodrig9')
-        return {first_name: 'Simon', last_name: 'Rodriguez'};
-    else
-        return {first_name: 'Gerry', last_name: 'Fernandez'};
+  /**
+   * TODO: Implement for Feature 5
+   *      For now just implemented two users, this will be a service like 
+   *      the others
+   */
+    return (username == 'srodrig9')
+        ? {first_name: 'Simon', last_name: 'Rodriguez'}
+        : {first_name: 'Gerry', last_name: 'Fernandez'};
 
 }
 

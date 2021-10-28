@@ -1,4 +1,4 @@
-@use '../base';
+@use 'base';
 
 .Profile {
     position: absolute;
@@ -20,12 +20,9 @@
 
     transition: background-color, 150ms ease-in;
 
-    :hover {
-        background-color: base.$color-background-light;
-    }
-
     p {
         font-family: base.$font-secondary;
+        color: white;
     }
 
     .profile-picture {
@@ -53,6 +50,10 @@
         }
     }
 
+}
+
+.Profile:hover {
+        background-color: base.$color-background-light;
 }
 
 /* Phone Size */
