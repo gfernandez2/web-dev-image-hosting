@@ -10,6 +10,8 @@ import { getImagesByUser, Iimage, postImageByUser } from './services/imageServic
 import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
 import { getFullName } from './services/userServices';
 
+/* FIXME!!! Remove later */
+import LoginModal from './components/LoginModal/LoginModal';
 
 // Just hardcoded the default user for now. later when we implement
 // authentication, the default user will be a guest
@@ -120,6 +122,8 @@ const App = (): JSX.Element => {
                     </Route>
                 </Switch>
             </Router>    
+
+            {/* <LoginModal /> */}
         </div>
     );
 };
