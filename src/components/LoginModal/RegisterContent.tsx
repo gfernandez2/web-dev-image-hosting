@@ -1,35 +1,56 @@
-import React from 'react';
+import React, { MouseEvent, useRef } from 'react';
+import { useHistory } from 'react-router';
+import { createUser } from '../../services/userServices';
 
-const RegisterContent = () => {
+type registerContentProps = {
+
+    // registerClick: () => void;
+    cancelClick: (e: MouseEvent<HTMLButtonElement>) => void;
+};
+
+const RegisterContent = ({ cancelClick }: registerContentProps): JSX.Element => {
+
+    const firstNameRef = useRef<HTMLInputElement>(null);
+    const lastNameRef  = useRef<HTMLInputElement>(null);
+    const emailRef     = useRef<HTMLInputElement>(null);
+    const passwordRef  = useRef<HTMLInputElement>(null);
+
+    const history = useHistory();
+
+    const registerClick = () => {
+
+        const fname = firstNameRef.current?.value;
+        const lname = lastNameRef.current?.value;
+        const email = emailRef.current?.value;
+        const pword = passwordRef.current?.value;
+
+        if (fname && lname && email && pword) {
+            createUser(fname, lname, email, pword);
+            history.push('/');
+            
+        }
+    };
 
     return (
         <>
-            <h2>Make an account to save and organize your favorite pictures</h2>
-            <div className="container">
-                <div className="login-type-switcher">   x
-                    <p>Login</p>
-                    <p className="selected">Register</p>
-                </div>
+            <form>
+                <span>
+                    <label htmlFor="firstName">First Name</label>
+                    <input type="text" name="firstName" ref={firstNameRef}/>
+                    <label htmlFor="lastName">Last Name</label>
+                    <input type="text" name="lastName" ref={lastNameRef} />
+                </span>
 
-                <form>
-                    <span>
-                        <label htmlFor="firstName">First Name</label>
-                        <input type="text" name="firstName" id="" />
-                        <label htmlFor="lastName">Last Name</label>
-                        <input type="text" name="lastName" id="" />
-                    </span>
+                <label htmlFor="email">Email</label>
+                <input type="email" name="email" ref={emailRef} />
 
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" id="" />
-
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" id="" />
-                </form>
-            </div>
+                <label htmlFor="password">Password</label>
+                <input type="password" name="password" ref={passwordRef} />
+            </form>
 
             <div className="login-buttons">
-                <button>Cancel</button>
-                <button>Login</button>
+                <button onClick={cancelClick}>Cancel</button>
+                <button onClick={registerClick}>Login</button>
             </div>
         </>
     );

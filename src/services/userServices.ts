@@ -41,8 +41,18 @@ export async function getIdFromUsername(username : string) {
     return data[0].id;
 }
 
+export async function userIsLoggedIn() {
+
+    return true;
+}
+
+export async function getCurrUser() {
+
+    return 'srodrig9';
+}
+
 // Creation of newUser
-export const createUser = async (firstName : string, lastName : string, email : string, password : string) => {
+export async function createUser(firstName : string, lastName : string, email : string, password : string) {
     const user = new Parse.User();
   
     user.set('firstName', firstName);
@@ -51,7 +61,9 @@ export const createUser = async (firstName : string, lastName : string, email : 
     user.set('username', email); // assign email to username as well
     user.set('password', password);
   
-    //console.log("User: ", user);
-    
     await user.signUp();
-};
+}
+
+export async function loginUser() {
+    throw new Error('Not yet implemented!');
+}
