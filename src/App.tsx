@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 
 // Components
 import HomePage from './components/HomePage/HomePage';
@@ -112,14 +112,18 @@ const App = (): JSX.Element => {
                             folders={folders}
                         />
                     </Route>
+                    
+                    <Route path="/login" component={LoginModal} />
 
-                    <Route path="/">
+                    <Route exact path="/">
                         <HomePage
                             userFullName={userFullName} 
                             fileInputChange={fileInputChange}
                             profileClick={profileClick}
                         />
                     </Route>
+
+                    <Redirect to="/" />
                 </Switch>
             </Router>    
 

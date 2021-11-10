@@ -1,27 +1,25 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
-const LoginContent = () => {
+type loginContentProps = {
+    
+    // loginClick: () => void;
+    cancelClick: (e: MouseEvent<HTMLButtonElement>) => void;
+};
+
+const LoginContent = ({ cancelClick }: loginContentProps): JSX.Element => {
 
     return (
         <>
-            <h2>Welcome back!</h2>
-            <div className="container">
-                <div className="login-type-switcher">
-                    <p className="selected">Login</p>
-                    <p>Register</p>
-                </div>
+            <form>
+                <label htmlFor="email">Email</label>
+                <input type="email" name="email" id="" />
 
-                <form>
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" id="" />
-
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" id="" />
-                </form>
-            </div>
+                <label htmlFor="password">Password</label>
+                <input type="password" name="password" id="" />
+            </form>
 
             <div className="login-buttons">
-                <button>Cancel</button>
+                <button onClick={cancelClick}>Cancel</button>
                 <button>Login</button>
             </div>
         </>
