@@ -10,21 +10,24 @@ import { createUser } from '../../services/userServices';
 import '../../styles/LoginModal.scss';
 
 type loginModalProps = {
-    loginButtonClick    : (e: MouseEvent<HTMLButtonElement>) => void;
-    registerButtonClick : (e: MouseEvent<HTMLButtonElement>) => void;
+    initalLoginState    ?: boolean;
+    // loginButtonClick    : (e: MouseEvent<HTMLButtonElement>) => void;
+    // registerButtonClick : (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
 
-const LoginModal = (): JSX.Element => {
+const LoginModal = ({ initalLoginState }: loginModalProps): JSX.Element => {
 
     const history = useHistory();
 
-    // const loginUser = () => {};
     const cancelButtonClick = () => {
         history.push('/');
     };
 
-    const [login, setLogin] = useState(true);
+    if (initalLoginState === undefined)
+        initalLoginState = true;
+
+    const [login, setLogin] = useState(initalLoginState);
 
     const loginRef = useRef<HTMLParagraphElement>(null);
     const registerRef = useRef<HTMLParagraphElement>(null);
@@ -45,17 +48,23 @@ const LoginModal = (): JSX.Element => {
     const loginSelectEvent = () => {
         if (!login)
             setLogin(!login);
+
+        history.push('/login');
     };
 
     const registerSelectEvent = () => {
         if (login)
             setLogin(!login);
+
+        history.push('/register');
     };
 
     return (
         <div className="LoginModal">
 
-            <h2>Welcome!</h2>
+            <h2>
+                {login ? ('Welcome!') : ('Create an account to save and organize photos to a library!')}
+            </h2>
             <div className="container">
                 <div className="login-type-switcher">
                     <p ref={loginRef} onClick={loginSelectEvent}>Login</p>

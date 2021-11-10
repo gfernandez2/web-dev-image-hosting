@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 // Components
 import HomePage from './components/HomePage/HomePage';
@@ -113,7 +113,13 @@ const App = (): JSX.Element => {
                         />
                     </Route>
                     
-                    <Route path="/login" component={LoginModal} />
+                    <Route path="/login" >
+                        <LoginModal initalLoginState={true} />
+                    </Route>
+
+                    <Route path="/register">
+                        <LoginModal initalLoginState={false} />
+                    </Route>
 
                     <Route exact path="/">
                         <HomePage

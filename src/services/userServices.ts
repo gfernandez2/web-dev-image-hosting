@@ -41,6 +41,16 @@ export async function getIdFromUsername(username : string) {
     return data[0].id;
 }
 
+export async function userIsLoggedIn() {
+
+    return 'true';
+}
+
+export async function getCurrUser() {
+
+    return 'srodrig9';
+}
+
 // Creation of newUser
 export async function createUser(firstName : string, lastName : string, email : string, password : string) {
     const user = new Parse.User();
