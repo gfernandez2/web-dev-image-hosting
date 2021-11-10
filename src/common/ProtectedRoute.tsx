@@ -1,18 +1,21 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
+import { } from '../services/userServices';
+
 type protectedLoginProps = {
-    isLoggedIn: boolean,
-    redirect: string,
+    desiredCondition: boolean;
+    redirectIfTrue: string;
+    redirectIfFalse: string;
 };
 
-const ProtectedLoginRoute = ({isLoggedIn, redirect}: protectedLoginProps): JSX.Element => {
+const ProtectedLoginRoute = ({ desiredCondition, redirectIfTrue, redirectIfFalse}: protectedLoginProps): JSX.Element => {
 
     return (
         <>
-            {isLoggedIn 
-                ? (<Redirect to={redirect} />)
-                : (<Redirect to="/login" />)}
+            {isLoggedIn == desiredCondition
+                ? (<Redirect to={redirectIfTrue} />)
+                : (<Redirect to={redirectIfFalse} />)}
         </>
     );
 
