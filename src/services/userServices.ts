@@ -43,7 +43,7 @@ export async function getIdFromUsername(username : string) {
 
 export async function userIsLoggedIn() {
 
-    return 'true';
+    return true;
 }
 
 export async function getCurrUser() {
