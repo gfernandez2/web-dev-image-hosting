@@ -4,29 +4,48 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 // Components
 import HomePage from './components/HomePage/HomePage';
 import PhotoLibrary from './components/PhotoLibrary/PhotoLibrary';
+import LoginModal from './components/LoginModal/LoginModal';
 
 // Services
 import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
 import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
-import { getFullName } from './services/userServices';
-
-/* FIXME!!! Remove later */
-import LoginModal from './components/LoginModal/LoginModal';
-
-// Just hardcoded the default user for now. later when we implement
-// authentication, the default user will be a guest
-const DEFAULT_CURRENT_USER = 'gfernan2';
+import { getCurrUser, getFullName } from './services/userServices';
 
 const App = (): JSX.Element => {
     
     /* State */
-    const [ currUser, setCurrUser ] = useState(DEFAULT_CURRENT_USER);
+    const [ currUser, setCurrUser ] = useState('');
+    const [ isLoggedIn, setIsLoggedIn ] = useState(false);
     const [ userFullName, setUserFullName ] = useState('');
     const [ images, setImages ] = useState<Iimage[]>([]);
     const [ folders, setFolders ] = useState<Ifolder[]>([]);
 
+    useEffect(() => {
+        (async () => {
+            try {
+                const user = await getCurrUser();
+                lsetCurrUser(user);
+
+            } catch (error) {
+                console.error('Login Error: ', error);
+                
+            }
+        })();
+    });
+
+    useEffect(() => {
+        if (currUser == '' || !currUser)
+            setIsLoggedIn(false);
+        else
+            setIsLoggedIn(true);
+    }, [currUser]);
+
     // Update the user's full name when the currUser changes
     useEffect(() => {
+
+        if (currUser == '')
+            return;
+
         (async () => {
             const user = await getFullName(currUser);
             setUserFullName(`${user.first_name} ${user.last_name}`);
@@ -35,6 +54,10 @@ const App = (): JSX.Element => {
 
     // Update the images on the page when the currUser changes
     useEffect(() => {
+
+        if (currUser == '')
+            return;
+
         (async () => {
             const imgList = await getImagesByUser(currUser);
             setImages(imgList);
@@ -42,6 +65,10 @@ const App = (): JSX.Element => {
     }, [currUser]);
 
     useEffect(() => {
+
+        if (currUser == '')
+            return; 
+
         (async () => {
             const folders = await getFoldersByUser(currUser);
             setFolders(folders);
@@ -49,7 +76,6 @@ const App = (): JSX.Element => {
     }, [currUser, images]);
 
     /* Event Listeners */
-
     const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
         (async () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -112,14 +138,6 @@ const App = (): JSX.Element => {
                             folders={folders}
                         />
                     </Route>
-                    
-                    <Route path="/login" >
-                        <LoginModal initalLoginState={true} />
-                    </Route>
-
-                    <Route path="/register">
-                        <LoginModal initalLoginState={false} />
-                    </Route>
 
                     <Route exact path="/">
                         <HomePage
@@ -128,6 +146,32 @@ const App = (): JSX.Element => {
                             profileClick={profileClick}
                         />
                     </Route>
+
+
+                    {/* 
+                        Protected Route for /login
+                            User should not be able to go to route if already
+                            logged in 
+                    */}
+                    {
+                        !isLoggedIn &&
+                        <Route path="/login">
+                            <LoginModal initalLoginState={true} />
+                        </Route>
+
+                    }
+
+                    {/* 
+                        Protected Route for /register
+                            User should not be able to go to route if already
+                            logged in 
+                    */}
+                    {
+                        !isLoggedIn &&
+                        <Route path="/register">
+                            <LoginModal initalLoginState={false} />
+                        </Route>
+                    }
 
                     <Redirect to="/" />
                 </Switch>
