@@ -13,6 +13,16 @@ friends. Will work similarly to Imgur.
 Simply run `npm start`. If you are missing dependencies, make sure you run
 `npm i` as well.
 
+# Feature 5 Notes
+User log-in and registration should work, so feel free to create a new User and test things out.
+We have dummy User accounts set up with respective Photo Libraries and images, so feel free to look at those as well.
+
+Example Accounts:
+- User: gfernan2 Pass: 1234
+- User: srodrig9 Pass: 1234
+- User: mwicks@nd.edu Pass: 1234
+- User: pbui@nd.edu Pass: 1234
+
 # Feature 4 Notes
 Because we haven't implemented user switching yet, we cycle by default between
 two user, Simon and Gerry. Note that you can change users by clicking on the 

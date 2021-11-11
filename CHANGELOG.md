@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 11-10-2021
+
+### Added
+
+- User Authentication (Log in/Log out)
+- User Registration - allows for creation of new users
+- Added new Log in Route with additional Components
+- Added userServives.ts, with Parse user authentication methods and session handling
+
+### Changed
+
+- Clicking the profile button when logged out allows a user to log in
+- Clicking the profile button when logged in allows a user to log out
+- A user can no longer go to a Photo Library page when not logged in
+
 ## [0.2.0] - 10-27-2021
 
 ### Added
