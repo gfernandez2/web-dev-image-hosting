@@ -13,7 +13,7 @@
 ## Both
 - [x] Complete Code Review
 - [x] Make parse queries in the services, not components
-- [x] Make a github release called `0.2.0` and update `CHANGELOG.md`
+- [ ] Make a github release called `0.2.0` and update `CHANGELOG.md`
 - [x] Load async data correctly
 - [x] Comments
 - [x] No Errors
@@ -51,5 +51,5 @@ because database is hard to modify in the future) [`Simon`]
 
 ## Misc
 - [x] UML Diagram for the database [`Simon`]
-- [x] Create GitHub release [`Gerry`]
-- [x] Make `CHANGELOG.md` [`Gerry`]
+- [ ] Create GitHub release [`Gerry`]
+- [ ] Make `CHANGELOG.md` [`Gerry`]
