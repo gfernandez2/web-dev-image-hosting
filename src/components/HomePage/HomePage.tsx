@@ -8,18 +8,35 @@ import PageTravel from '../PageTravel';
 
 // Services
 import { ChevronDown } from 'react-feather';
+import { getCurrUser, userIsLoggedIn } from '../../services/userServices';
 
 import '../../styles/HomePage.scss';
+import { logoutUser } from '../../services/userServices';
 
 type homeProps = {
     userFullName : string;
     fileInputChange : (e : ChangeEvent<HTMLInputElement>) => void;
-    profileClick : () => void;
+    setCurrUser: any
 }
 
-const HomePage = ({userFullName, fileInputChange, profileClick} : homeProps): JSX.Element => {
+const HomePage = ({userFullName, fileInputChange, setCurrUser} : homeProps): JSX.Element => {
     
     const history = useHistory();
+
+    // Changes the current user when you click on the profile
+    const profileClick = async () => {
+
+        if (userIsLoggedIn()) {
+            alert('Logging out!');
+            await logoutUser();
+            setCurrUser('');
+            console.log('curr user', await getCurrUser());
+            
+            history.push('/');
+        } else {
+            history.push('/login');
+        }
+    };
 
     /**
      * Routes to image library page
@@ -37,9 +54,15 @@ const HomePage = ({userFullName, fileInputChange, profileClick} : homeProps): JS
             <UploadArea onChange={fileInputChange}>
                 Click this box to upload an image
             </UploadArea>
-            <PageTravel id="travel-down" onClick={pageTravelClick}>
-                <ChevronDown />
-            </PageTravel>
+
+            {
+                userIsLoggedIn() &&
+                <PageTravel id="travel-down" onClick={pageTravelClick}>
+                    <ChevronDown />
+                </PageTravel>
+            }
+
+            
         </div>
     );
 };

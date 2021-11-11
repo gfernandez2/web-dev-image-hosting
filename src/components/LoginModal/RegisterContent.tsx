@@ -1,14 +1,15 @@
 import React, { MouseEvent, useRef } from 'react';
 import { useHistory } from 'react-router';
-import { createUser } from '../../services/userServices';
+import { createUser, getCurrUser } from '../../services/userServices';
 
 type registerContentProps = {
 
     // registerClick: () => void;
     cancelClick: (e: MouseEvent<HTMLButtonElement>) => void;
+    setCurrUser: any;
 };
 
-const RegisterContent = ({ cancelClick }: registerContentProps): JSX.Element => {
+const RegisterContent = ({ setCurrUser, cancelClick }: registerContentProps): JSX.Element => {
 
     const firstNameRef = useRef<HTMLInputElement>(null);
     const lastNameRef  = useRef<HTMLInputElement>(null);
@@ -17,7 +18,7 @@ const RegisterContent = ({ cancelClick }: registerContentProps): JSX.Element => 
 
     const history = useHistory();
 
-    const registerClick = () => {
+    const registerClick = async () => {
 
         const fname = firstNameRef.current?.value;
         const lname = lastNameRef.current?.value;
@@ -25,7 +26,8 @@ const RegisterContent = ({ cancelClick }: registerContentProps): JSX.Element => 
         const pword = passwordRef.current?.value;
 
         if (fname && lname && email && pword) {
-            createUser(fname, lname, email, pword);
+            await createUser(fname, lname, email, pword);
+            setCurrUser(await getCurrUser());
             history.push('/');
             
         }

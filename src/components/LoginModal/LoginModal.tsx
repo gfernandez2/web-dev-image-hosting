@@ -11,12 +11,13 @@ import '../../styles/LoginModal.scss';
 
 type loginModalProps = {
     initalLoginState    ?: boolean;
+    setCurrUser          : any;
     // loginButtonClick    : (e: MouseEvent<HTMLButtonElement>) => void;
     // registerButtonClick : (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
 
-const LoginModal = ({ initalLoginState }: loginModalProps): JSX.Element => {
+const LoginModal = ({ initalLoginState, setCurrUser }: loginModalProps): JSX.Element => {
 
     const history = useHistory();
 
@@ -73,8 +74,8 @@ const LoginModal = ({ initalLoginState }: loginModalProps): JSX.Element => {
 
                 {
                     login
-                        ? (<LoginContent  cancelClick={cancelButtonClick}/>)
-                        : (<RegisterContent cancelClick={cancelButtonClick}/>)
+                        ? (<LoginContent  setCurrUser={setCurrUser} cancelClick={cancelButtonClick}/>)
+                        : (<RegisterContent setCurrUser={setCurrUser} cancelClick={cancelButtonClick}/>)
                 }
             </div>
 

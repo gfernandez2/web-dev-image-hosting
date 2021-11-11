@@ -11,18 +11,19 @@ import { Iimage } from '../../services/imageServices';
 import { Ifolder } from '../../services/folderServices';
 
 import '../../styles/PhotoLibrary.scss';
+import { logoutUser, userIsLoggedIn, getCurrUser } from '../../services/userServices';
 
 type libraryProps = {
     userFullName : string;
     fileInputChange : (e : ChangeEvent<HTMLInputElement>) => Promise<void>;
-    profileClick : () => void;
     folderClick:  (e: React.MouseEvent<HTMLLIElement>) => void;
     headerClick: () => void;
     images: Iimage[];
     folders: Ifolder[];
+    setCurrUser: any
 }
 
-const PhotoLibrary = ({userFullName, fileInputChange, profileClick, folderClick, headerClick, images, folders} : libraryProps): JSX.Element => {
+const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, images, folders, setCurrUser} : libraryProps): JSX.Element => {
     const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
 
         alert('We are planning to implement a detail view for the image, for now, we will just copy the image to your clipboard!'); 
@@ -34,6 +35,22 @@ const PhotoLibrary = ({userFullName, fileInputChange, profileClick, folderClick,
     };
 
     const history = useHistory();
+
+
+    // Changes the current user when you click on the profile
+    const profileClick = async () => {
+
+        if (userIsLoggedIn()) {
+            alert('Logging out!');
+            await logoutUser();
+            setCurrUser('');
+            console.log('curr user', await getCurrUser());
+            
+            history.push('/');
+        } else {
+            history.push('/login');
+        }
+    };
 
     /**
      * Routes to image library page

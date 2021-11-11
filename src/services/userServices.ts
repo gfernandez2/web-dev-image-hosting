@@ -41,26 +41,26 @@ export async function getIdFromUsername(username : string) {
     return data[0].id;
 }
 
-export async function userIsLoggedIn() {
+export function userIsLoggedIn() {
 
-    const currentUser = await Parse.User.current();
+    const currentUser = Parse.User.current();
 
-    if(currentUser != null){
+    if(currentUser !== undefined && currentUser != null){
         return true;
     }
 
     return false;
 }
 
-export async function getCurrUser() {
+export async function getCurrUser(): Promise<string | undefined> {
 
-    const currentUser = await Parse.User.current();
+    const currentUser = Parse.User.current();
 
-    if(currentUser != null){
-        return currentUser;
+    if(currentUser != null && currentUser !== undefined) {
+        return await currentUser.get('username');
     }
 
-    return null;
+    return undefined;
 }
 
 // Creation of newUser
@@ -81,7 +81,9 @@ export async function loginUser(username : string, password : string) {
         const loggedInUser = await Parse.User.logIn(username, password);
 
         // test for success
-        if(await getCurrUser() == loggedInUser){
+        if(await getCurrUser() == loggedInUser.get('username')){
+            console.log('logged in as ', loggedInUser.get('username'));
+            
             return true;
         }
 
@@ -94,9 +96,10 @@ export async function loginUser(username : string, password : string) {
 export async function logoutUser() {
     try {
         await Parse.User.logOut();
+        console.log(Parse.User.current());
 
         // test for success
-        if(await getCurrUser() == null){
+        if(await getCurrUser() === undefined){
             return true;
         }
 
