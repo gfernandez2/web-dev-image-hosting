@@ -43,12 +43,24 @@ export async function getIdFromUsername(username : string) {
 
 export async function userIsLoggedIn() {
 
-    return true;
+    const currentUser = await Parse.User.current();
+
+    if(currentUser != null){
+        return true;
+    }
+
+    return false;
 }
 
 export async function getCurrUser() {
 
-    return 'srodrig9';
+    const currentUser = await Parse.User.current();
+
+    if(currentUser != null){
+        return currentUser;
+    }
+
+    return null;
 }
 
 // Creation of newUser
@@ -64,6 +76,32 @@ export async function createUser(firstName : string, lastName : string, email : 
     await user.signUp();
 }
 
-export async function loginUser() {
-    throw new Error('Not yet implemented!');
+export async function loginUser(username : string, password : string) {
+    try {
+        const loggedInUser = await Parse.User.logIn(username, password);
+
+        // test for success
+        if(await getCurrUser() == loggedInUser){
+            return true;
+        }
+
+        return false;
+    } catch {
+        return false;
+    }
+}
+
+export async function logoutUser() {
+    try {
+        await Parse.User.logOut();
+
+        // test for success
+        if(await getCurrUser() == null){
+            return true;
+        }
+
+        return false;
+    } catch {
+        return false;
+    }
 }
