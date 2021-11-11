@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { useHistory } from 'react-router-dom';
+import { ChevronDown } from 'react-feather';
 
 // Components
 import Profile from '../Profile';
@@ -7,11 +8,10 @@ import UploadArea from './UploadArea';
 import PageTravel from '../PageTravel';
 
 // Services
-import { ChevronDown } from 'react-feather';
-import { getCurrUser, userIsLoggedIn } from '../../services/userServices';
+import { userIsLoggedIn } from '../../services/userServices';
+import { logoutUser } from '../../services/userServices';
 
 import '../../styles/HomePage.scss';
-import { logoutUser } from '../../services/userServices';
 
 type homeProps = {
     userFullName : string;
@@ -30,10 +30,11 @@ const HomePage = ({userFullName, fileInputChange, setCurrUser} : homeProps): JSX
             alert('Logging out!');
             await logoutUser();
             setCurrUser('');
-            console.log('curr user', await getCurrUser());
-            
+
+            // Routes back to the home page
             history.push('/');
         } else {
+            // Routes to login
             history.push('/login');
         }
     };
@@ -48,21 +49,25 @@ const HomePage = ({userFullName, fileInputChange, setCurrUser} : homeProps): JSX
     /* Component */
     return (
         <div className="HomePage">
+
             <div className="top-bar">
                 <Profile userFullName={userFullName} onClick={profileClick} />
             </div>
+
             <UploadArea onChange={fileInputChange}>
                 Click this box to upload an image
             </UploadArea>
 
             {
+                /**
+                 * The button to travel to the library will only show if the
+                 * user is logged in
+                 */
                 userIsLoggedIn() &&
                 <PageTravel id="travel-down" onClick={pageTravelClick}>
                     <ChevronDown />
                 </PageTravel>
             }
-
-            
         </div>
     );
 };

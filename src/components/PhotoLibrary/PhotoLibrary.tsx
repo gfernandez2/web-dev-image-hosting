@@ -11,7 +11,7 @@ import { Iimage } from '../../services/imageServices';
 import { Ifolder } from '../../services/folderServices';
 
 import '../../styles/PhotoLibrary.scss';
-import { logoutUser, userIsLoggedIn, getCurrUser } from '../../services/userServices';
+import { logoutUser, userIsLoggedIn } from '../../services/userServices';
 
 type libraryProps = {
     userFullName : string;
@@ -44,7 +44,6 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
             alert('Logging out!');
             await logoutUser();
             setCurrUser('');
-            console.log('curr user', await getCurrUser());
             
             history.push('/');
         } else {

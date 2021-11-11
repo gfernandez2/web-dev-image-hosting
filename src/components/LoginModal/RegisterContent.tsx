@@ -52,7 +52,7 @@ const RegisterContent = ({ setCurrUser, cancelClick }: registerContentProps): JS
 
             <div className="login-buttons">
                 <button onClick={cancelClick}>Cancel</button>
-                <button onClick={registerClick}>Login</button>
+                <button onClick={registerClick}>Register</button>
             </div>
         </>
     );

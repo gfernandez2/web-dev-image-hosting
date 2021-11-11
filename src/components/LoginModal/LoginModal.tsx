@@ -1,19 +1,14 @@
-import React, { MouseEvent, useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import LoginContent from './LoginContent';
 import RegisterContent from './RegisterContent';
-
-// TODO Import loginUser function
-import { createUser } from '../../services/userServices';
 
 import '../../styles/LoginModal.scss';
 
 type loginModalProps = {
     initalLoginState    ?: boolean;
     setCurrUser          : any;
-    // loginButtonClick    : (e: MouseEvent<HTMLButtonElement>) => void;
-    // registerButtonClick : (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
 
@@ -28,6 +23,7 @@ const LoginModal = ({ initalLoginState, setCurrUser }: loginModalProps): JSX.Ele
     if (initalLoginState === undefined)
         initalLoginState = true;
 
+    // Controls whether the "login" or "register" button is selected
     const [login, setLogin] = useState(initalLoginState);
 
     const loginRef = useRef<HTMLParagraphElement>(null);
@@ -66,6 +62,7 @@ const LoginModal = ({ initalLoginState, setCurrUser }: loginModalProps): JSX.Ele
             <h2>
                 {login ? ('Welcome!') : ('Create an account to save and organize photos to a library!')}
             </h2>
+            
             <div className="container">
                 <div className="login-type-switcher">
                     <p ref={loginRef} onClick={loginSelectEvent}>Login</p>
@@ -73,6 +70,10 @@ const LoginModal = ({ initalLoginState, setCurrUser }: loginModalProps): JSX.Ele
                 </div>
 
                 {
+                    /**
+                     * Shows the appropriate content depending on whether they
+                     * have login selected or register
+                     */
                     login
                         ? (<LoginContent  setCurrUser={setCurrUser} cancelClick={cancelButtonClick}/>)
                         : (<RegisterContent setCurrUser={setCurrUser} cancelClick={cancelButtonClick}/>)

@@ -1,10 +1,10 @@
 import React, { MouseEvent, useRef } from 'react';
 import { useHistory } from 'react-router';
+
+// Services
 import { getCurrUser, loginUser } from '../../services/userServices';
 
-type loginContentProps = {
-    
-    // loginClick: () => void;
+type loginContentProps = {    
     setCurrUser: any;
     cancelClick: (e: MouseEvent<HTMLButtonElement>) => void;
 };
@@ -13,19 +13,23 @@ const LoginContent = ({ setCurrUser, cancelClick }: loginContentProps): JSX.Elem
 
     const history = useHistory();
 
+    // Refs
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);    
 
+    // Event Handlers
     const loginButtonClick = async () => {
         
+        // Get the input from the user
         const email = emailRef.current?.value;
         const pword = passwordRef.current?.value;
 
         if (email && pword) {
             
+            // Attempt to log in
             const isLoggedIn = await loginUser(email, pword);
+            
             if (isLoggedIn) {
-                console.log(await getCurrUser());
                 setCurrUser(await getCurrUser());
                 history.push('/');
             }

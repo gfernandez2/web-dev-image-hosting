@@ -1,5 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import { 
+    BrowserRouter as Router, 
+    Switch, 
+    Route, 
+    Redirect 
+} from 'react-router-dom';
 
 // Components
 import HomePage from './components/HomePage/HomePage';
@@ -20,12 +25,13 @@ const App = (): JSX.Element => {
     const [ folders, setFolders ] = useState<Ifolder[]>([]);
 
     useEffect(() => {
+
+        // On initial load, tries to get the current user if it's defined
         (async () => {
             try {
                 const user = await getCurrUser();
 
                 if (user) {
-                    console.log(user);
                     setCurrUser(user);
                 }
 
@@ -38,10 +44,9 @@ const App = (): JSX.Element => {
 
     // Update the user's full name when the currUser changes
     useEffect(() => {
-
         (async () => {
-
-            if (!userIsLoggedIn()) {
+            if (!userIsLoggedIn() || currUser == '') {
+                // Sets a generic "Log In" message instead of a name
                 setUserFullName('Log In');
                 return;
             }
@@ -53,10 +58,8 @@ const App = (): JSX.Element => {
 
     // Update the images on the page when the currUser changes
     useEffect(() => {
-
         (async () => {
-
-            if (!userIsLoggedIn())
+            if (!userIsLoggedIn() || currUser == '')
                 return;
 
             const imgList = await getImagesByUser(currUser);
@@ -65,10 +68,10 @@ const App = (): JSX.Element => {
     }, [currUser]);
 
     useEffect(() => {
-    
         (async () => {
-            if (!userIsLoggedIn())
+            if (!userIsLoggedIn() || currUser == '')
                 return;
+
             const folders = await getFoldersByUser(currUser);
             setFolders(folders);
         })();
@@ -109,6 +112,11 @@ const App = (): JSX.Element => {
 
 
     const headerClick = async () => {
+
+        if (!userIsLoggedIn() || currUser != '') {
+            return;
+        }
+
         const imgs = await getImagesByUser(currUser);
         setImages(imgs);
     };
@@ -121,7 +129,7 @@ const App = (): JSX.Element => {
                         // Protected Route for /library
                         // User cannot go to their library if they are not 
                         // logged in
-                        userIsLoggedIn() && 
+                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
                         <Route path="/library">
                             <PhotoLibrary
                                 userFullName={userFullName} 
@@ -151,7 +159,7 @@ const App = (): JSX.Element => {
                             logged in 
                     */}
                     {
-                        !userIsLoggedIn() &&
+                        !userIsLoggedIn() && currUser == '' &&
                         <Route path="/login">
                             <LoginModal 
                                 initalLoginState={true} 
@@ -167,7 +175,7 @@ const App = (): JSX.Element => {
                             logged in 
                     */}
                     {
-                        !userIsLoggedIn() &&
+                        !userIsLoggedIn() && currUser == '' &&
                         <Route path="/register">
                             <LoginModal 
                                 initalLoginState={false} 

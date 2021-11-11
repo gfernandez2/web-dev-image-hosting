@@ -1,16 +1,7 @@
 import Parse from './initParse';
 
 // Requests full name from username
-export async function getFullName(username : string) {
-    // const resp = await axios.get('./services/data.json');
-    // const user = resp.data.users[username];
-    // return {first_name : user.first_name, last_name : user.last_name};
-
-    /**
-     * TODO: Implement for Feature 5
-     *      For now just implemented two users, this will be a service like 
-     *      the others
-     */
+export async function getFullName(username : string): Promise<any> {
 
     const userId = await getIdFromUsername(username);
 
@@ -26,7 +17,7 @@ export async function getFullName(username : string) {
 }
 
 // Gets the id from the username, which is used throughout the app
-export async function getIdFromUsername(username : string) {
+export async function getIdFromUsername(username : string): Promise<string> {
 
     // Query against the 'username' field
     const query = new Parse.Query(Parse.User);
@@ -41,7 +32,7 @@ export async function getIdFromUsername(username : string) {
     return data[0].id;
 }
 
-export function userIsLoggedIn() {
+export function userIsLoggedIn(): boolean {
 
     const currentUser = Parse.User.current();
 
@@ -52,7 +43,7 @@ export function userIsLoggedIn() {
     return false;
 }
 
-export async function getCurrUser(): Promise<string | undefined> {
+export async function getCurrUser(): Promise<string> {
 
     const currentUser = Parse.User.current();
 
@@ -60,11 +51,16 @@ export async function getCurrUser(): Promise<string | undefined> {
         return await currentUser.get('username');
     }
 
-    return undefined;
+    return '';
 }
 
 // Creation of newUser
-export async function createUser(firstName : string, lastName : string, email : string, password : string) {
+export async function createUser(
+    firstName: string, 
+    lastName: string, 
+    email: string, 
+    password: string): Promise<void> {
+
     const user = new Parse.User();
   
     user.set('firstName', firstName);
@@ -76,7 +72,7 @@ export async function createUser(firstName : string, lastName : string, email : 
     await user.signUp();
 }
 
-export async function loginUser(username : string, password : string) {
+export async function loginUser(username: string, password: string): Promise<boolean> {
     try {
         const loggedInUser = await Parse.User.logIn(username, password);
 
@@ -89,14 +85,16 @@ export async function loginUser(username : string, password : string) {
 
         return false;
     } catch {
+        // If user login failed
         return false;
     }
 }
 
-export async function logoutUser() {
+export async function logoutUser(): Promise<boolean> {
+
     try {
+        // Attempts to log out user
         await Parse.User.logOut();
-        console.log(Parse.User.current());
 
         // test for success
         if(await getCurrUser() === undefined){
