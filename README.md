@@ -49,4 +49,4 @@ To run the program, you need to make sure you set the correct environment
 variables. The easiest way to do this is to create a `.env` file. We've
 provided a `.template.env` to give you an idea on what needs to be set. Simply
 replace the `<YOUR_VALUE_HERE>` sections with the correct API keys. For
-submission, we've already included a preconfigured .env file.
+submission, we've already included a preconfigured .env file. 
