@@ -1,31 +1,56 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { 
+    BrowserRouter as Router, 
+    Switch, 
+    Route, 
+    Redirect 
+} from 'react-router-dom';
 
 // Components
 import HomePage from './components/HomePage/HomePage';
 import PhotoLibrary from './components/PhotoLibrary/PhotoLibrary';
+import LoginModal from './components/LoginModal/LoginModal';
 
 // Services
 import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
 import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
-import { getFullName } from './services/userServices';
-
-
-// Just hardcoded the default user for now. later when we implement
-// authentication, the default user will be a guest
-const DEFAULT_CURRENT_USER = 'gfernan2';
+import { getCurrUser, getFullName, userIsLoggedIn } from './services/userServices';
 
 const App = (): JSX.Element => {
     
     /* State */
-    const [ currUser, setCurrUser ] = useState(DEFAULT_CURRENT_USER);
-    const [ userFullName, setUserFullName ] = useState('');
+    const [ currUser, setCurrUser ] = useState('');
+    const [ userFullName, setUserFullName ] = useState('Log In');
     const [ images, setImages ] = useState<Iimage[]>([]);
     const [ folders, setFolders ] = useState<Ifolder[]>([]);
+
+    useEffect(() => {
+
+        // On initial load, tries to get the current user if it's defined
+        (async () => {
+            try {
+                const user = await getCurrUser();
+
+                if (user) {
+                    setCurrUser(user);
+                }
+
+            } catch (error) {
+                console.error('Login Error: ', error);
+            }
+        })();
+    });
+
 
     // Update the user's full name when the currUser changes
     useEffect(() => {
         (async () => {
+            if (!userIsLoggedIn() || currUser == '') {
+                // Sets a generic "Log In" message instead of a name
+                setUserFullName('Log In');
+                return;
+            }
+
             const user = await getFullName(currUser);
             setUserFullName(`${user.first_name} ${user.last_name}`);
         })();
@@ -34,6 +59,9 @@ const App = (): JSX.Element => {
     // Update the images on the page when the currUser changes
     useEffect(() => {
         (async () => {
+            if (!userIsLoggedIn() || currUser == '')
+                return;
+
             const imgList = await getImagesByUser(currUser);
             setImages(imgList);
         })();
@@ -41,13 +69,15 @@ const App = (): JSX.Element => {
 
     useEffect(() => {
         (async () => {
+            if (!userIsLoggedIn() || currUser == '')
+                return;
+
             const folders = await getFoldersByUser(currUser);
             setFolders(folders);
         })();
     }, [currUser, images]);
 
     /* Event Listeners */
-
     const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
         (async () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -80,17 +110,13 @@ const App = (): JSX.Element => {
         setImages([...images, ...newImages] );
     };
 
-    // Changes the current user when you click on the profile
-    const profileClick = () => {
-        alert('For feature 5 we will implement full user authentication. But for now, this button will just switch users between Gerry and Simon');
-
-        if (currUser === 'srodrig9')
-            setCurrUser('gfernan2');
-        else
-            setCurrUser('srodrig9');
-    };
 
     const headerClick = async () => {
+
+        if (!userIsLoggedIn() || currUser != '') {
+            return;
+        }
+
         const imgs = await getImagesByUser(currUser);
         setImages(imgs);
     };
@@ -99,27 +125,70 @@ const App = (): JSX.Element => {
         <div className="App">
             <Router>
                 <Switch>
-                    <Route path="/library">
-                        <PhotoLibrary
-                            userFullName={userFullName} 
-                            fileInputChange={fileInputChange}
-                            profileClick={profileClick}
-                            folderClick={folderClick}
-                            headerClick={headerClick}
-                            images={images}
-                            folders={folders}
-                        />
-                    </Route>
+                    {
+                        // Protected Route for /library
+                        // User cannot go to their library if they are not 
+                        // logged in
+                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
+                        <Route path="/library">
+                            <PhotoLibrary
+                                userFullName={userFullName} 
+                                fileInputChange={fileInputChange}
+                                folderClick={folderClick}
+                                headerClick={headerClick}
+                                images={images}
+                                folders={folders}
+                                setCurrUser={setCurrUser}
+                            />
+                        </Route>
+                    }
 
-                    <Route path="/">
+                    <Route exact path="/">
                         <HomePage
                             userFullName={userFullName} 
                             fileInputChange={fileInputChange}
-                            profileClick={profileClick}
+                            // isLoggedIn={isLoggedIn}
+                            setCurrUser={setCurrUser}
                         />
                     </Route>
+
+
+                    {/* 
+                        Protected Route for /login
+                            User should not be able to go to route if already
+                            logged in 
+                    */}
+                    {
+                        !userIsLoggedIn() && currUser == '' &&
+                        <Route path="/login">
+                            <LoginModal 
+                                initalLoginState={true} 
+                                setCurrUser={setCurrUser}
+                            />
+                        </Route>
+
+                    }
+
+                    {/* 
+                        Protected Route for /register
+                            User should not be able to go to route if already
+                            logged in 
+                    */}
+                    {
+                        !userIsLoggedIn() && currUser == '' &&
+                        <Route path="/register">
+                            <LoginModal 
+                                initalLoginState={false} 
+                                setCurrUser={setCurrUser}
+                            />
+                        </Route>
+                    }
+
+                    <Redirect to="/" />
                 </Switch>
             </Router>    
+
+            {/* <LoginModal /> */}
         </div>
     );
 };
