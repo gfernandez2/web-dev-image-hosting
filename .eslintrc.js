@@ -30,11 +30,11 @@ module.exports = {
             'unix'
         ],
         'quotes': [
-            'error',
+            'warn',
             'single'
         ],
         'semi': [
-            'error',
+            'warn',
             'always'
         ],
         '@typescript-eslint/no-explicit-any': 'off'
