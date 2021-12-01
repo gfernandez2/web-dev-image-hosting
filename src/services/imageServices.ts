@@ -1,4 +1,4 @@
-import Parse from './initParse';
+import Parse from 'parse';
 
 import { getIdFromUsername } from './userServices';
 

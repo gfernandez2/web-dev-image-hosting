@@ -1,4 +1,4 @@
-import Parse from './initParse';
+import Parse from 'parse';
 
 // Requests full name from username
 export async function getFullName(username : string): Promise<any> {

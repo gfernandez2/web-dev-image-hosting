@@ -1,4 +1,4 @@
-import Parse from './initParse';
+import Parse from 'parse';
 import { Iimage } from './imageServices';
 import { getIdFromUsername } from './userServices';
 

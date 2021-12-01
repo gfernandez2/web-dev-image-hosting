@@ -41,7 +41,6 @@ const App = (): JSX.Element => {
         })();
     });
 
-
     // Update the user's full name when the currUser changes
     useEffect(() => {
         (async () => {
