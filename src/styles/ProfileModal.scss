@@ -1,0 +1,48 @@
+@use 'base';
+
+.ProfileModal {
+    color: white;
+    padding: 0.5em;
+    box-shadow: 0 0 10px base.$color-background-dark;
+
+    // Remove later
+    width: 15em;
+
+    background: base.$color-background-light;
+    display: flex;
+    flex-flow: column;
+
+    border-radius: base.$border-radius-normal;
+
+    .ModalUserEntry {
+        padding: 0.25em;
+        display: flex;
+        align-items: center;
+ 
+        img {
+            border-radius: 50%;
+        }
+        p {
+            margin-left: 0.5em;
+            font-family: base.$font-primary;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    }
+
+
+    .clickable-entry {
+        padding: 0.25em;
+        font-family: base.$font-secondary;
+        font-size: 1.2rem;
+        margin-top: 0.5em;
+        border-radius: 5px;
+
+
+    }
+
+    .clickable-entry:hover {
+        background-color: base.$color-background-dark;
+        cursor: pointer;
+    }
+}

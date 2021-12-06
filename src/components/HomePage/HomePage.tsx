@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ChevronDown } from 'react-feather';
 
@@ -6,6 +6,7 @@ import { ChevronDown } from 'react-feather';
 import Profile from '../Profile';
 import UploadArea from './UploadArea';
 import PageTravel from '../PageTravel';
+import ProfileModal from '../UserProfile/ProfileModal';
 
 // Services
 import { userIsLoggedIn } from '../../services/userServices';
@@ -22,17 +23,23 @@ type homeProps = {
 const HomePage = ({userFullName, fileInputChange, setCurrUser} : homeProps): JSX.Element => {
     
     const history = useHistory();
+    const [modalVisibility, setModalVisibility] = useState(true);
 
     // Changes the current user when you click on the profile
     const profileClick = async () => {
 
-        if (userIsLoggedIn()) {
-            alert('Logging out!');
-            await logoutUser();
-            setCurrUser('');
+        alert('i"ve been clicked');
 
-            // Routes back to the home page
-            history.push('/');
+        if (userIsLoggedIn()) {
+
+            setModalVisibility(false);
+
+            // alert('Logging out!');
+            // await logoutUser();
+            // setCurrUser('');
+
+            // // Routes back to the home page
+            // history.push('/');
         } else {
             // Routes to login
             history.push('/login');
@@ -49,6 +56,13 @@ const HomePage = ({userFullName, fileInputChange, setCurrUser} : homeProps): JSX
     /* Component */
     return (
         <div className="HomePage">
+            
+            <ProfileModal 
+                isHidden={modalVisibility}
+                user="srodrig9"
+                profileSettingsClick={() => alert('hewwo')}
+                logOutClick={() => alert('hewwo')}
+            />
 
             <div className="top-bar">
                 <Profile userFullName={userFullName} onClick={profileClick} />

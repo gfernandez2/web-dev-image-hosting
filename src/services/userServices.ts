@@ -32,6 +32,26 @@ export async function getIdFromUsername(username : string): Promise<string> {
     return data[0].id;
 }
 
+// Gets the id from the username, which is used throughout the app
+export async function getUserProfilePicture(username : string): Promise<string> {
+
+    console.log('hello from userServices.ts');
+
+    const userId = await getIdFromUsername(username);
+
+    // Create new Query
+    const query = new Parse.Query(Parse.User);
+    const user = await query.get(userId);
+
+    if(!user){
+        throw new Error('Could not find user');
+    }
+
+    console.log(user.get('userProfilePicture')._url);
+
+    return user.get('userProfilePicture')._url;
+}
+
 export function userIsLoggedIn(): boolean {
 
     const currentUser = Parse.User.current();

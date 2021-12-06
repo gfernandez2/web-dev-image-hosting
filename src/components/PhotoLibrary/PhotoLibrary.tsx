@@ -10,8 +10,10 @@ import LibraryFolders from './LibraryFolders';
 import { Iimage } from '../../services/imageServices';
 import { Ifolder } from '../../services/folderServices';
 
+import { getUserProfilePicture } from '../../services/userServices';
+
 import '../../styles/PhotoLibrary.scss';
-import { logoutUser, userIsLoggedIn } from '../../services/userServices';
+import { logoutUser, userIsLoggedIn, getCurrUser } from '../../services/userServices';
 
 type libraryProps = {
     userFullName : string;
