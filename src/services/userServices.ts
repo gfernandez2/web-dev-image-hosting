@@ -26,7 +26,8 @@ export async function getIdFromUsername(username : string): Promise<string> {
     const data = await query.find();
 
     if (data[0] === undefined || data[0].id === undefined)
-        throw new Error('That particular user could not be found in the database!');
+        return '';
+        // throw new Error('That particular user could not be found in the database!');
 
     // return the built in id property
     return data[0].id;
@@ -34,8 +35,6 @@ export async function getIdFromUsername(username : string): Promise<string> {
 
 // Gets the id from the username, which is used throughout the app
 export async function getUserProfilePicture(username : string): Promise<string> {
-
-    console.log('hello from userServices.ts');
 
     const userId = await getIdFromUsername(username);
 

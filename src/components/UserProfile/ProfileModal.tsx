@@ -1,8 +1,11 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import '../../styles/ProfileModal.scss';
 
-import { getFullName, getUserProfilePicture } from '../../services/userServices';
+import { 
+    getFullName, 
+    getUserProfilePicture 
+} from '../../services/userServices';
 
 type modalUserEntryProps = {
     name: string;
@@ -10,8 +13,8 @@ type modalUserEntryProps = {
 }
 
 type modalProps = {
-    isHidden: boolean
     user: string;
+    profilePicture: string;
     profileSettingsClick: (e: React.MouseEvent<HTMLDivElement>) => void;
     logOutClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
@@ -19,9 +22,7 @@ type modalProps = {
 const ModalUserEntry = ({ name, profilePicture }: modalUserEntryProps): JSX.Element => {
 
     return (
-        <div 
-            className="ModalUserEntry"
-        > 
+        <div className="ModalUserEntry"> 
             <img 
                 src={profilePicture} 
                 alt={`Profile picture of ${name}`}>
@@ -31,10 +32,9 @@ const ModalUserEntry = ({ name, profilePicture }: modalUserEntryProps): JSX.Elem
     );
 }; 
 
-const ProfileModal = ({ isHidden, user, profileSettingsClick, logOutClick }: modalProps) : JSX.Element => { 
+const ProfileModal = ({ user, profilePicture, profileSettingsClick, logOutClick }: modalProps) : JSX.Element => { 
 
     const [name, setName] = useState('');
-    const [pfp, setPfp] = useState('');
 
     useEffect(() => {
         (async () => {
@@ -42,18 +42,12 @@ const ProfileModal = ({ isHidden, user, profileSettingsClick, logOutClick }: mod
             setName(`${first_name} ${last_name}`);
         })();
     }, []);
-    
-    useEffect(() => {
-        (async () => {
-            setPfp(await getUserProfilePicture(user));
-        })();
-    }, []);
 
     return (
-        <div className={`ProfileModal ${isHidden ? 'hidden' : ''}`}>
+        <div className="ProfileModal">
             <ModalUserEntry
                 name={name}
-                profilePicture={pfp}
+                profilePicture={profilePicture}
             />
 
             <div className="clickable-entry" onClick={profileSettingsClick}>Profile Settings</div>

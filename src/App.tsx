@@ -15,6 +15,7 @@ import LoginModal from './components/LoginModal/LoginModal';
 import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
 import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
 import { getCurrUser, getFullName, userIsLoggedIn } from './services/userServices';
+import ProfileSettings from './components/UserProfile/ProfileSettings';
 
 const App = (): JSX.Element => {
     
@@ -143,8 +144,17 @@ const App = (): JSX.Element => {
                         </Route>
                     }
 
+                    {
+                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
+                        <Route path="/settings">
+                            <ProfileSettings
+                            />
+                        </Route>
+                    }
+
                     <Route exact path="/">
                         <HomePage
+                            currUser={currUser}
                             userFullName={userFullName} 
                             fileInputChange={fileInputChange}
                             // isLoggedIn={isLoggedIn}
