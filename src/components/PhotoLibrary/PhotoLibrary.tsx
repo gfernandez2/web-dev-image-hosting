@@ -17,6 +17,8 @@ import {
 } from '../../services/userServices';
 
 
+import { motion } from 'framer-motion';
+import { pageTransitionVariant, pageTransition } from '../../styles/variants';
 import '../../styles/PhotoLibrary.scss';
 
 type libraryProps = {
@@ -94,7 +96,14 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
 
     /* Component */
     return (
-        <div className="PhotoLibrary">
+        <motion.div className="PhotoLibrary"
+            key="library"
+            variants={pageTransitionVariant}
+            transition={pageTransition}
+            initial="initial"
+            animate="up"
+            exit="down"
+        >
             <LibraryHeader
                 userFullName={userFullName} 
                 fileInputChange={fileInputChange} 
@@ -111,7 +120,7 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
                 onClick={folderClick}
             />
             <ImageGrid images={images} imageOnClick={imageClick}/>
-        </div>
+        </motion.div>
     );
 };
 

@@ -11,6 +11,8 @@ import ProfileModal from '../UserProfile/ProfileModal';
 // Services
 import { userIsLoggedIn, logoutUser } from '../../services/userServices';
 
+import { AnimatePresence, motion } from 'framer-motion';
+import {pageTransition, pageTransitionVariant} from '../../styles/variants';
 import '../../styles/HomePage.scss';
 
 type homeProps = {
@@ -68,14 +70,22 @@ const HomePage = ({ userFullName, fileInputChange, setCurrUser, userProfilePictu
 
     /* Component */
     return (
-        <div className="HomePage">
-            
-            {modalVisibility && <ProfileModal
+        <motion.div className="HomePage"
+            key="home"
+            variants={pageTransitionVariant}
+            transition={pageTransition}
+            initial="initialHome"
+            animate="up"
+            exit="down"
+        >    
+            <ProfileModal
                 userFullName={userFullName}
                 profileSettingsClick={profileSettingsClick}
                 logOutClick={profileLogOutClick}
                 profilePicture={userProfilePicture}
-            />}
+                modalVisibility={modalVisibility}
+            />
+
 
             <div className="top-bar">
                 <Profile 
@@ -99,7 +109,7 @@ const HomePage = ({ userFullName, fileInputChange, setCurrUser, userProfilePictu
                     <ChevronDown />
                 </PageTravel>
             }
-        </div>
+        </motion.div>
     );
 };
 

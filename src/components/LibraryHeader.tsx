@@ -33,12 +33,13 @@ const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profile
                 <ChevronUp />
             </PageTravel>
 
-            {modalVisibility && <ProfileModal
+            <ProfileModal
                 userFullName={userFullName}
                 profileSettingsClick={profileSettingsClick}
                 logOutClick={logOutClick}
                 profilePicture={profilePicture}
-            />}
+                modalVisibility={modalVisibility}
+            />
 
             <Profile userFullName={userFullName} onClick={profileClick} profilePicture={profilePicture} />
         </header>
