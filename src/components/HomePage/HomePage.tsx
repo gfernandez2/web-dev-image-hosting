@@ -1,5 +1,4 @@
-import React, { ChangeEvent, useRef, useState, MouseEvent, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import React, { ChangeEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ChevronDown } from 'react-feather';
 
@@ -10,58 +9,39 @@ import PageTravel from '../PageTravel';
 import ProfileModal from '../UserProfile/ProfileModal';
 
 // Services
-import { userIsLoggedIn, getUserProfilePicture, logoutUser, getCurrUser } from '../../services/userServices';
+import { userIsLoggedIn, logoutUser } from '../../services/userServices';
 
 import '../../styles/HomePage.scss';
 
 type homeProps = {
     userFullName : string;
     fileInputChange: (e : ChangeEvent<HTMLInputElement>) => void;
-    currUser: string
-    setCurrUser: any
+    setCurrUser: any;
+    userProfilePicture: string;
+    setUserProfilePicture: any;
 }
 
-const HomePage = ({userFullName, fileInputChange, currUser, setCurrUser}: homeProps): JSX.Element => {
+const HomePage = ({ userFullName, fileInputChange, setCurrUser, userProfilePicture, setUserProfilePicture }: homeProps): JSX.Element => {
     
     const history = useHistory();
+
+    /* State */
     const [modalVisibility, setModalVisibility] = useState(false);
-    const [pfp, setPfp] = useState('');
-    const [user, setUser] = useState('');
 
-    useEffect(() => {
-        (async () => {
-            setPfp(await getUserProfilePicture(await getCurrUser()));
-        })();
-    }, []);
-
-    useEffect(() => {
-        (async () => {
-            setUser(await getCurrUser());
-        });
-    }, []);
-
-    const homePageClickHandler = (e: MouseEvent) => {
-        if (modalVisibility) {
-            //
-        }
-    };
+    // const homePageClickHandler = (e: MouseEvent) => {
+    //     if (modalVisibility) {
+    //         //
+    //     }
+    // };
 
     // Changes the current user when you click on the profile
     const profileClick = () => {
-
         if (userIsLoggedIn()) {
             setModalVisibility(true);
         } else {
             // Routes to login
             history.push('/login');
         }
-    };
-
-    /**
-     * Routes to image library page
-     */
-    const pageTravelClick = () => {
-        history.push('/library');
     };
 
     const profileSettingsClick = () => {
@@ -71,7 +51,7 @@ const HomePage = ({userFullName, fileInputChange, currUser, setCurrUser}: homePr
     const profileLogOutClick = async () => {
         await logoutUser();
         setCurrUser('');
-        setPfp('');
+        setUserProfilePicture('');
 
         setModalVisibility(false);
 
@@ -79,22 +59,29 @@ const HomePage = ({userFullName, fileInputChange, currUser, setCurrUser}: homePr
         history.push('/');
     };
 
+    /**
+     * Routes to image library page
+     */
+    const pageTravelClick = () => {
+        history.push('/library');
+    };
+
     /* Component */
     return (
         <div className="HomePage">
             
             {modalVisibility && <ProfileModal
-                user={currUser}
+                userFullName={userFullName}
                 profileSettingsClick={profileSettingsClick}
                 logOutClick={profileLogOutClick}
-                profilePicture={pfp}
+                profilePicture={userProfilePicture}
             />}
 
             <div className="top-bar">
                 <Profile 
                     userFullName={userFullName} 
                     onClick={profileClick} 
-                    profilePicture={pfp}
+                    profilePicture={userProfilePicture}
                 />
             </div>
 

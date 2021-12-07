@@ -14,3 +14,10 @@
         border-radius: base.$border-radius-small;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .ImageItem {
+        width: 300px;
+        height: 300px
+    }
+}

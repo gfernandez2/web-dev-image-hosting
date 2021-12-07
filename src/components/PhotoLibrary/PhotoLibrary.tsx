@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // Components
@@ -9,11 +9,15 @@ import LibraryFolders from './LibraryFolders';
 // Services
 import { Iimage } from '../../services/imageServices';
 import { Ifolder } from '../../services/folderServices';
+import { 
+    logoutUser, 
+    userIsLoggedIn, 
+    getCurrUser, 
+    getUserProfilePicture
+} from '../../services/userServices';
 
-import { getUserProfilePicture } from '../../services/userServices';
 
 import '../../styles/PhotoLibrary.scss';
-import { logoutUser, userIsLoggedIn, getCurrUser } from '../../services/userServices';
 
 type libraryProps = {
     userFullName : string;
@@ -38,19 +42,47 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
 
     const history = useHistory();
 
+    /* State */
+    const [modalVisibility, setModalVisibility] = useState(false);
+    const [pfp, setPfp] = useState('');
+
+    /* Effects */
+
+    // pfp
+    useEffect(() => {
+        (async () => {
+            try {
+                setPfp(await getUserProfilePicture(await getCurrUser()));
+            } catch (error) {
+                console.error(error);
+                setPfp('');
+            }
+        })();
+    }, []);
 
     // Changes the current user when you click on the profile
     const profileClick = async () => {
-
         if (userIsLoggedIn()) {
-            alert('Logging out!');
-            await logoutUser();
-            setCurrUser('');
-            
-            history.push('/');
+            setModalVisibility(true);
         } else {
+            // Routes to login
             history.push('/login');
         }
+    };
+
+    const profileSettingsClick = () => {
+        history.push('/settings');
+    };
+
+    const profileLogOutClick = async () => {
+        await logoutUser();
+        setCurrUser('');
+        setPfp('');
+
+        setModalVisibility(false);
+
+        // Routes back to the home page
+        history.push('/');
     };
 
     /**
@@ -68,6 +100,10 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
                 fileInputChange={fileInputChange} 
                 pageTravelClick={pageTravelClick}
                 profileClick={profileClick}
+                modalVisibility={modalVisibility}
+                profileSettingsClick={profileSettingsClick}
+                logOutClick={profileLogOutClick}
+                profilePicture={pfp}
             />
             <h1 onClick={headerClick}>Your Library</h1>
             <LibraryFolders

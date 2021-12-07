@@ -14,7 +14,7 @@ import LoginModal from './components/LoginModal/LoginModal';
 // Services
 import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
 import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
-import { getCurrUser, getFullName, userIsLoggedIn } from './services/userServices';
+import { getCurrUser, getFullName, getUserProfilePicture, userIsLoggedIn } from './services/userServices';
 import ProfileSettings from './components/UserProfile/ProfileSettings';
 
 const App = (): JSX.Element => {
@@ -24,26 +24,25 @@ const App = (): JSX.Element => {
     const [ userFullName, setUserFullName ] = useState('Log In');
     const [ images, setImages ] = useState<Iimage[]>([]);
     const [ folders, setFolders ] = useState<Ifolder[]>([]);
+    const [ userProfilePicture, setUserProfilePicture ] = useState('');
 
+    /* Effects */
+
+    // currUser
     useEffect(() => {
-
         // On initial load, tries to get the current user if it's defined
         (async () => {
             try {
                 const user = await getCurrUser();
-
-                if (user) {
+                if (user)
                     setCurrUser(user);
-                }
-
             } catch (error) {
                 console.error('Login Error: ', error);
             }
         })();
     });
 
-
-    // Update the user's full name when the currUser changes
+    // userFullName
     useEffect(() => {
         (async () => {
             if (!userIsLoggedIn() || currUser == '') {
@@ -57,7 +56,7 @@ const App = (): JSX.Element => {
         })();
     }, [currUser]);
 
-    // Update the images on the page when the currUser changes
+    // images
     useEffect(() => {
         (async () => {
             if (!userIsLoggedIn() || currUser == '')
@@ -68,6 +67,7 @@ const App = (): JSX.Element => {
         })();
     }, [currUser]);
 
+    // folders
     useEffect(() => {
         (async () => {
             if (!userIsLoggedIn() || currUser == '')
@@ -77,6 +77,17 @@ const App = (): JSX.Element => {
             setFolders(folders);
         })();
     }, [currUser, images]);
+
+    // userProfilePicture
+    useEffect(() => {
+        (async () => {
+            if (!userIsLoggedIn || currUser == '')
+                return;
+
+            const pfp = await getUserProfilePicture(currUser);
+            setUserProfilePicture(pfp);
+        })();
+    });
 
     /* Event Listeners */
     const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -143,7 +154,6 @@ const App = (): JSX.Element => {
                             />
                         </Route>
                     }
-
                     {
                         userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
                         <Route path="/settings">
@@ -151,24 +161,17 @@ const App = (): JSX.Element => {
                             />
                         </Route>
                     }
-
                     <Route exact path="/">
                         <HomePage
-                            currUser={currUser}
                             userFullName={userFullName} 
                             fileInputChange={fileInputChange}
-                            // isLoggedIn={isLoggedIn}
                             setCurrUser={setCurrUser}
+                            userProfilePicture={userProfilePicture}
+                            setUserProfilePicture={setUserProfilePicture}
                         />
                     </Route>
-
-
-                    {/* 
-                        Protected Route for /login
-                            User should not be able to go to route if already
-                            logged in 
-                    */}
                     {
+                        // Protected route for /login
                         !userIsLoggedIn() && currUser == '' &&
                         <Route path="/login">
                             <LoginModal 
@@ -178,13 +181,8 @@ const App = (): JSX.Element => {
                         </Route>
 
                     }
-
-                    {/* 
-                        Protected Route for /register
-                            User should not be able to go to route if already
-                            logged in 
-                    */}
                     {
+                        // Protected Route for /register
                         !userIsLoggedIn() && currUser == '' &&
                         <Route path="/register">
                             <LoginModal 
@@ -197,8 +195,6 @@ const App = (): JSX.Element => {
                     <Redirect to="/" />
                 </Switch>
             </Router>    
-
-            {/* <LoginModal /> */}
         </div>
     );
 };

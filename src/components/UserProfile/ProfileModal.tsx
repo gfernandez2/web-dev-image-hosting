@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import '../../styles/ProfileModal.scss';
-
-import { 
-    getFullName, 
-    getUserProfilePicture 
-} from '../../services/userServices';
 
 type modalUserEntryProps = {
     name: string;
@@ -13,10 +8,10 @@ type modalUserEntryProps = {
 }
 
 type modalProps = {
-    user: string;
     profilePicture: string;
     profileSettingsClick: (e: React.MouseEvent<HTMLDivElement>) => void;
     logOutClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+    userFullName: string;
 }
 
 const ModalUserEntry = ({ name, profilePicture }: modalUserEntryProps): JSX.Element => {
@@ -32,21 +27,12 @@ const ModalUserEntry = ({ name, profilePicture }: modalUserEntryProps): JSX.Elem
     );
 }; 
 
-const ProfileModal = ({ user, profilePicture, profileSettingsClick, logOutClick }: modalProps) : JSX.Element => { 
-
-    const [name, setName] = useState('');
-
-    useEffect(() => {
-        (async () => {
-            const {first_name, last_name} = await getFullName(user);
-            setName(`${first_name} ${last_name}`);
-        })();
-    }, []);
+const ProfileModal = ({ profilePicture, profileSettingsClick, logOutClick, userFullName }: modalProps) : JSX.Element => {
 
     return (
         <div className="ProfileModal">
             <ModalUserEntry
-                name={name}
+                name={userFullName}
                 profilePicture={profilePicture}
             />
 
