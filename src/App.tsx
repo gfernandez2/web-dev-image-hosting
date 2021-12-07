@@ -14,7 +14,7 @@ import LoginModal from './components/LoginModal/LoginModal';
 // Services
 import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
 import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
-import { getCurrUser, getFullName, getUserProfilePicture, userIsLoggedIn } from './services/userServices';
+import { getCurrUser, getFullName, getUserProfilePicture, userIsLoggedIn, getUserCreated, postProfilePicturebyUser } from './services/userServices';
 import ProfileSettings from './components/UserProfile/ProfileSettings';
 
 const App = (): JSX.Element => {
@@ -25,6 +25,7 @@ const App = (): JSX.Element => {
     const [ images, setImages ] = useState<Iimage[]>([]);
     const [ folders, setFolders ] = useState<Ifolder[]>([]);
     const [ userProfilePicture, setUserProfilePicture ] = useState('');
+    const [ createdAt, setCreatedAt] = useState(new Date());
 
     /* Effects */
 
@@ -87,7 +88,18 @@ const App = (): JSX.Element => {
             const pfp = await getUserProfilePicture(currUser);
             setUserProfilePicture(pfp);
         })();
-    });
+    }, [currUser]);
+
+    // createdAt
+    useEffect(() => {
+        (async () => {
+            if (!userIsLoggedIn || currUser == '')
+                return;
+
+            const created = await getUserCreated(currUser);
+            setCreatedAt(created);
+        })();
+    }, [currUser]);
 
     /* Event Listeners */
     const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -122,7 +134,6 @@ const App = (): JSX.Element => {
         setImages([...images, ...newImages] );
     };
 
-
     const headerClick = async () => {
 
         if (!userIsLoggedIn() || currUser != '') {
@@ -131,6 +142,16 @@ const App = (): JSX.Element => {
 
         const imgs = await getImagesByUser(currUser);
         setImages(imgs);
+    };
+
+    const profileFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files)
+            return;
+
+        const img = files[0];
+        const newPfp = await postProfilePicturebyUser(currUser, img);
+        setUserProfilePicture(newPfp);
     };
 
     return (
@@ -158,6 +179,11 @@ const App = (): JSX.Element => {
                         userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
                         <Route path="/settings">
                             <ProfileSettings
+                                userFullName={userFullName}
+                                username={currUser}
+                                userProfilePicture={userProfilePicture}
+                                createdAt={createdAt}
+                                profileFileChange={profileFileChange}
                             />
                         </Route>
                     }

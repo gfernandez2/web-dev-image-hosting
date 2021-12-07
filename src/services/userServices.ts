@@ -51,6 +51,22 @@ export async function getUserProfilePicture(username : string): Promise<string> 
     return user.get('userProfilePicture')._url;
 }
 
+// Gets when user was created
+export async function getUserCreated(username : string): Promise<Date> {
+
+    const userId = await getIdFromUsername(username);
+
+    // Create new Query
+    const query = new Parse.Query(Parse.User);
+    const user = await query.get(userId);
+
+    if(!user){
+        throw new Error('Could not find user');
+    }
+
+    return user.get('createdAt');
+}
+
 export function userIsLoggedIn(): boolean {
 
     const currentUser = Parse.User.current();
@@ -89,6 +105,24 @@ export async function createUser(
     user.set('password', password);
   
     await user.signUp();
+}
+
+// updates profile picture of user
+export async function postProfilePicturebyUser(username: string, image: File): Promise<string> {
+
+    // Get some required data
+    const id = getIdFromUsername(username);
+    const parseFile = new Parse.File(image.name, image);
+
+    // Query the user
+    const query = new Parse.Query(Parse.User);
+    const user  = await query.get(await id);
+
+    user.set('userProfilePicture', parseFile);
+  
+    await user.save();
+
+    return user.get('userProfilePicture')._url;
 }
 
 export async function loginUser(username: string, password: string): Promise<boolean> {

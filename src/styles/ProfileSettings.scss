@@ -1,0 +1,36 @@
+@use 'base';
+
+.ProfileSettings {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100vh;
+
+    input { 
+        display: none;
+    }
+
+    img {
+        border-radius: 50%;
+        width: 20em;
+        height: 20em;
+        cursor: pointer;
+    }
+
+    h1, 
+    h2 {
+        color: white;
+        // line-height: 5rem;
+    }
+
+    h1 {
+        font-family: base.$font-primary;
+        font-size: 5rem;
+    }
+
+    h2 {
+        font-family: base.$font-secondary;
+        font-weight: normal;
+    }
+}
