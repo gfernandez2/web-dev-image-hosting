@@ -12,8 +12,14 @@
         font-size: 2rem;
         font-family: base.$font-secondary;  
         list-style: none;
-        text-decoration: underline;
+        // text-decoration: underline;
         cursor: pointer;
         font-weight: bold;
+        border-radius: base.$border-radius-small;
+        padding: 0.1em;
+    }
+
+    li:hover {
+        background-color: base.$color-background-light;
     }
 }

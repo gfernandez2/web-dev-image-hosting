@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProfileSettings = () => {
+const ProfileSettings = (): JSX.Element => {
     return (
         <div>
             
