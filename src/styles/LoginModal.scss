@@ -123,7 +123,7 @@
     }
 }
 
-@media screen and (max-width: 600px){
+@media screen and (max-width: base.$tablet-size){
         .LoginModal {
             width: 100vw;
             height: 100%;

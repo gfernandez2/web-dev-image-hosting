@@ -125,23 +125,18 @@
 }
 
 /* Tablet Size */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: base.$tablet-size) {
+    .ImageItem {
+        width: 300px;
+        height: 300px
+    }
 
     .ImageGrid {
         /* Center the grid items horizontally on tablet and smaller */
         justify-content: center;
         grid-template-columns: repeat(auto-fill, 300px);
     }
-}
 
-@media screen and (max-width: 768px) {
-    .ImageItem {
-        width: 300px;
-        height: 300px
-    }
-}
-
-@media screen and (max-width: 768px) {
     .PhotoLibrary {
         h1 {
             text-align: center;

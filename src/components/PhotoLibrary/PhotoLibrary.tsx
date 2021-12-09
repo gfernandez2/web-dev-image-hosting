@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
 
 // Components
 import ImageGrid from './ImageGrid';
@@ -49,10 +48,11 @@ const PhotoLibrary = ({
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const image = e.target.src;
+        const image = target.src;
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const img_alt = e.target.alt;
+        const img_alt = target.alt;
+        
         console.log(img_alt);
         setImgAlt(img_alt);
         setImgSelected(image);
