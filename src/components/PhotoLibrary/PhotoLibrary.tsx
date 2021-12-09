@@ -1,10 +1,11 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // Components
 import ImageGrid from './ImageGrid';
 import LibraryHeader from '../LibraryHeader';
 import LibraryFolders from './LibraryFolders';
+import ImageDetails from './ImageDetails';
 
 // Services
 import { Iimage } from '../../services/imageServices';
@@ -32,19 +33,47 @@ type libraryProps = {
 const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, images, folders, setCurrUser} : libraryProps): JSX.Element => {
     const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
 
-        alert('We are planning to implement a detail view for the image, for now, we will just copy the image to your clipboard!'); 
+        //alert('We are planning to implement a detail view for the image, for now, we will just copy the image to your clipboard!'); 
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const image = e.target.src;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const img_alt = e.target.alt;
+        console.log(img_alt);
+        setImgAlt(img_alt);
+        setImgSelected(image);
         navigator.clipboard.writeText(image);
+    };
+    
+    //onClick for photo-area
+    const areaClick = (e : React.MouseEvent<HTMLDivElement>) => {
+        if(outOfBoundsClick){
+
+        }
+        // if(imgSelected == ''){
+        //     return;
+        // }
+        // // e.stopPropagation();
+        // if(e.target != selectedImageRef.current){
+        //     console.log(e.target, selectedImageRef.current);
+            
+        //     setImgSelected('');
+        // }
     };
 
     const history = useHistory();
 
+    /* Refs */
+    const selectedImageRef = useRef<HTMLDivElement>(null);
+
     /* State */
     const [modalVisibility, setModalVisibility] = useState(false);
     const [pfp, setPfp] = useState('');
+    const [imgSelected, setImgSelected] = useState('');
+    const [outOfBoundsClick, setOutOfBoundsClick] = useState(false);
+    const [imgAlt, setImgAlt] = useState('');
 
     /* Effects */
 
@@ -110,7 +139,10 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
                 folders={folders}
                 onClick={folderClick}
             />
-            <ImageGrid images={images} imageOnClick={imageClick}/>
+            <div className="photo-area" onClick={areaClick}>       
+                {imgSelected != '' && <ImageDetails src={imgSelected} alt={imgAlt} outOfBounds={outOfBoundsClick} />}  
+                <ImageGrid images={images} imageOnClick={imageClick} />
+            </div>
         </div>
     );
 };
