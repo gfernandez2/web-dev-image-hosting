@@ -1,18 +1,16 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 type detailProps = {
     src : string;
     alt : string;
-    outOfBounds : boolean;
+    setIsFocused: any;
 }
 
-const ImageDetails = ({ src, alt, outOfBounds }: detailProps): JSX.Element => {
-
-    const imgDetailsRef = useRef<HTMLDivElement>(null);
+const ImageDetails = ({ src, alt, setIsFocused }: detailProps): JSX.Element => { 
 
     return (
-        <div className="ImageDetails" ref={imgDetailsRef}>
-            <img src={src} />
+        <div className="ImageDetails" tabIndex={0} onBlur={() => setIsFocused(false)} onFocus={setIsFocused(true)}> 
+            <img src={src} alt={alt} />
             <h3>{alt}</h3>
         </div>
     );

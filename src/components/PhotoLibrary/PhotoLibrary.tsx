@@ -4,7 +4,7 @@ import React, { ChangeEvent, useState, useRef } from 'react';
 import ImageGrid from './ImageGrid';
 import LibraryHeader from '../LibraryHeader';
 import LibraryFolders from './LibraryFolders';
-import ImageDetails from './ImageDetails';
+import ImageDetailsRef from './ImageDetails';
 
 // Services
 import { Iimage } from '../../services/imageServices';
@@ -48,10 +48,10 @@ const PhotoLibrary = ({
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const image = target.src;
+        const image = e.target.src;
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const img_alt = target.alt;
+        const img_alt = e.target.alt;
         
         console.log(img_alt);
         setImgAlt(img_alt);
@@ -61,9 +61,9 @@ const PhotoLibrary = ({
     
     //onClick for photo-area
     const areaClick = (e : React.MouseEvent<HTMLDivElement>) => {
-        if(outOfBoundsClick){
-            //
-        }
+        // if(outOfBoundsClick){
+        //     //
+        // }
         // if(imgSelected == ''){
         //     return;
         // }
@@ -103,8 +103,19 @@ const PhotoLibrary = ({
                 folders={folders}
                 onClick={folderClick}
             />
-            <div className="photo-area" onClick={areaClick}>       
-                {imgSelected != '' && <ImageDetails src={imgSelected} alt={imgAlt} outOfBounds={outOfBoundsClick} />}  
+            <div className="photo-area">       
+                {
+                    imgSelected != '' && (
+                        <ImageDetailsRef 
+                            src={imgSelected} 
+                            alt={imgAlt}
+                            setIsFocused={(bool: boolean) => {
+                                console.log(bool);
+                                !bool && setImgSelected('');
+                            }}
+                        />
+                    )
+                }  
                 <ImageGrid images={images} imageOnClick={imageClick} />
             </div>
         </div>
