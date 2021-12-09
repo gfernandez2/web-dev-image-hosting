@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { 
-    BrowserRouter as Router, 
+import {
     Switch, 
     Route, 
     Redirect 
@@ -157,6 +156,16 @@ const App = (): JSX.Element => {
     return (
         <div className="App">
             <Switch>
+                <Route exact path="/">
+                    <HomePage
+                        userFullName={userFullName}
+                        fileInputChange={fileInputChange}
+                        setCurrUser={setCurrUser}
+                        userProfilePicture={userProfilePicture}
+                        setUserProfilePicture={setUserProfilePicture}
+                    />
+                </Route>
+
                 {
                     // Protected Route for /library
                     // User cannot go to their library if they are not 
@@ -174,7 +183,9 @@ const App = (): JSX.Element => {
                         />
                     </Route>
                 }
+
                 {
+                    // Route for /settings
                     userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
                     <Route path="/settings">
                         <ProfileSettings
@@ -186,15 +197,7 @@ const App = (): JSX.Element => {
                         />
                     </Route>
                 }
-                <Route exact path="/">
-                    <HomePage
-                        userFullName={userFullName} 
-                        fileInputChange={fileInputChange}
-                        setCurrUser={setCurrUser}
-                        userProfilePicture={userProfilePicture}
-                        setUserProfilePicture={setUserProfilePicture}
-                    />
-                </Route>
+
                 {
                     // Protected route for /login
                     !userIsLoggedIn() && currUser == '' &&
@@ -206,6 +209,7 @@ const App = (): JSX.Element => {
                     </Route>
 
                 }
+
                 {
                     // Protected Route for /register
                     !userIsLoggedIn() && currUser == '' &&
@@ -217,6 +221,7 @@ const App = (): JSX.Element => {
                     </Route>
                 }
 
+                {/* If nothing else matches, redirect to home */}
                 <Redirect to="/" />
             </Switch>
         </div>
