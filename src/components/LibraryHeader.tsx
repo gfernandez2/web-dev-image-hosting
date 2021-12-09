@@ -5,7 +5,7 @@ import '../styles/LibraryHeader.scss';
 
 import UploadButton from '../components/UploadButton';
 import PageTravel from '../components/PageTravel';
-import Profile from '../components/Profile';
+import Profile from './UserProfile/Profile';
 import ProfileModal from './UserProfile/ProfileModal';
 
 type headerProps = {

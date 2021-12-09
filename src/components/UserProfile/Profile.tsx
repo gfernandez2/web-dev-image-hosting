@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 
-import '../styles/Profile.scss';
+import '../../styles/Profile.scss';
 
 type profileProps = {
     userFullName : string;

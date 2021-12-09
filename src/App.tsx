@@ -156,71 +156,69 @@ const App = (): JSX.Element => {
 
     return (
         <div className="App">
-            <Router>
-                <Switch>
-                    {
-                        // Protected Route for /library
-                        // User cannot go to their library if they are not 
-                        // logged in
-                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
-                        <Route path="/library">
-                            <PhotoLibrary
-                                userFullName={userFullName} 
-                                fileInputChange={fileInputChange}
-                                folderClick={folderClick}
-                                headerClick={headerClick}
-                                images={images}
-                                folders={folders}
-                                setCurrUser={setCurrUser}
-                            />
-                        </Route>
-                    }
-                    {
-                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
-                        <Route path="/settings">
-                            <ProfileSettings
-                                userFullName={userFullName}
-                                username={currUser}
-                                userProfilePicture={userProfilePicture}
-                                createdAt={createdAt}
-                                profileFileChange={profileFileChange}
-                            />
-                        </Route>
-                    }
-                    <Route exact path="/">
-                        <HomePage
+            <Switch>
+                {
+                    // Protected Route for /library
+                    // User cannot go to their library if they are not 
+                    // logged in
+                    userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
+                    <Route path="/library">
+                        <PhotoLibrary
                             userFullName={userFullName} 
                             fileInputChange={fileInputChange}
+                            folderClick={folderClick}
+                            headerClick={headerClick}
+                            images={images}
+                            folders={folders}
                             setCurrUser={setCurrUser}
-                            userProfilePicture={userProfilePicture}
-                            setUserProfilePicture={setUserProfilePicture}
                         />
                     </Route>
-                    {
-                        // Protected route for /login
-                        !userIsLoggedIn() && currUser == '' &&
-                        <Route path="/login">
-                            <LoginModal 
-                                initalLoginState={true} 
-                                setCurrUser={setCurrUser}
-                            />
-                        </Route>
+                }
+                {
+                    userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
+                    <Route path="/settings">
+                        <ProfileSettings
+                            userFullName={userFullName}
+                            username={currUser}
+                            userProfilePicture={userProfilePicture}
+                            createdAt={createdAt}
+                            profileFileChange={profileFileChange}
+                        />
+                    </Route>
+                }
+                <Route exact path="/">
+                    <HomePage
+                        userFullName={userFullName} 
+                        fileInputChange={fileInputChange}
+                        setCurrUser={setCurrUser}
+                        userProfilePicture={userProfilePicture}
+                        setUserProfilePicture={setUserProfilePicture}
+                    />
+                </Route>
+                {
+                    // Protected route for /login
+                    !userIsLoggedIn() && currUser == '' &&
+                    <Route path="/login">
+                        <LoginModal 
+                            initalLoginState={true} 
+                            setCurrUser={setCurrUser}
+                        />
+                    </Route>
 
-                    }
-                    {
-                        // Protected Route for /register
-                        !userIsLoggedIn() && currUser == '' &&
-                        <Route path="/register">
-                            <LoginModal 
-                                initalLoginState={false} 
-                                setCurrUser={setCurrUser}
-                            />
-                        </Route>
-                    }
+                }
+                {
+                    // Protected Route for /register
+                    !userIsLoggedIn() && currUser == '' &&
+                    <Route path="/register">
+                        <LoginModal 
+                            initalLoginState={false} 
+                            setCurrUser={setCurrUser}
+                        />
+                    </Route>
+                }
 
-                    <Redirect to="/" />
-                </Switch>
-            </Router>    
+                <Redirect to="/" />
+            </Switch>
         </div>
     );
 };

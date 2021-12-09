@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { ChevronDown } from 'react-feather';
 
 // Components
-import Profile from '../Profile';
+import Profile from '../UserProfile/Profile';
 import UploadArea from './UploadArea';
 import PageTravel from '../PageTravel';
 import ProfileModal from '../UserProfile/ProfileModal';
