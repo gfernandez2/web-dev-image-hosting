@@ -1,7 +1,5 @@
 import React, { useRef } from 'react';
 
-import '../../styles/ImageDetails.scss';
-
 type detailProps = {
     src : string;
     alt : string;

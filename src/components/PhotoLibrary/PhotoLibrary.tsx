@@ -50,7 +50,7 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
     //onClick for photo-area
     const areaClick = (e : React.MouseEvent<HTMLDivElement>) => {
         if(outOfBoundsClick){
-
+            //
         }
         // if(imgSelected == ''){
         //     return;
