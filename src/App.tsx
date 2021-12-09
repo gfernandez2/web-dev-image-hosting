@@ -1,23 +1,44 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { 
-    BrowserRouter as Router, 
+import {
     Switch, 
     Route, 
-    Redirect 
+    Redirect,
+    useHistory,
 } from 'react-router-dom';
 
 // Components
 import HomePage from './components/HomePage/HomePage';
 import PhotoLibrary from './components/PhotoLibrary/PhotoLibrary';
 import LoginModal from './components/LoginModal/LoginModal';
-
-// Services
-import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
-import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
-import { getCurrUser, getFullName, getUserProfilePicture, userIsLoggedIn, getUserCreated, postProfilePicturebyUser } from './services/userServices';
 import ProfileSettings from './components/UserProfile/ProfileSettings';
 
+// Services
+import { 
+    getImagesByUser, 
+    Iimage, 
+    postImageByUser
+} from './services/imageServices';
+
+import { 
+    Ifolder,
+    getFoldersByUser,
+    getImagesFromFolder
+} from './services/folderServices';
+
+import { 
+    getCurrUser,
+    getFullName,
+    getUserProfilePicture,
+    userIsLoggedIn,
+    getUserCreated,
+    postProfilePicturebyUser,
+    logoutUser
+} from './services/userServices';
+
+
 const App = (): JSX.Element => {
+    
+    const history = useHistory();
     
     /* State */
     const [ currUser, setCurrUser ] = useState('');
@@ -26,6 +47,8 @@ const App = (): JSX.Element => {
     const [ folders, setFolders ] = useState<Ifolder[]>([]);
     const [ userProfilePicture, setUserProfilePicture ] = useState('');
     const [ createdAt, setCreatedAt] = useState(new Date());
+
+    const [ modalVisibility, setModalVisibility ] = useState(false);
 
     /* Effects */
 
@@ -101,6 +124,18 @@ const App = (): JSX.Element => {
         })();
     }, [currUser]);
 
+    useEffect(() => {
+        if (currUser !== '')
+            setUserProfilePicture(currUser);
+        else
+            setUserProfilePicture('');
+    }, [currUser]);
+
+    useEffect(() => {
+        if (currUser === '')
+            setModalVisibility(false);  
+    }, [currUser]);
+
     /* Event Listeners */
     const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
         (async () => {
@@ -154,73 +189,105 @@ const App = (): JSX.Element => {
         setUserProfilePicture(newPfp);
     };
 
+    const profileClick = () => {
+        if (currUser !== '')
+            setModalVisibility(true);
+
+        else
+            history.push('/login');
+    };
+
+    const profileSettingsClick = () => {
+        history.push('/settings');
+    };
+
+    const profileLogOutClick = async () => {
+        await logoutUser();
+        setCurrUser('');
+
+        history.push('/');
+    };
+
     return (
         <div className="App">
-            <Router>
-                <Switch>
-                    {
-                        // Protected Route for /library
-                        // User cannot go to their library if they are not 
-                        // logged in
-                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
-                        <Route path="/library">
-                            <PhotoLibrary
-                                userFullName={userFullName} 
-                                fileInputChange={fileInputChange}
-                                folderClick={folderClick}
-                                headerClick={headerClick}
-                                images={images}
-                                folders={folders}
-                                setCurrUser={setCurrUser}
-                            />
-                        </Route>
-                    }
-                    {
-                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
-                        <Route path="/settings">
-                            <ProfileSettings
-                                userFullName={userFullName}
-                                username={currUser}
-                                userProfilePicture={userProfilePicture}
-                                createdAt={createdAt}
-                                profileFileChange={profileFileChange}
-                            />
-                        </Route>
-                    }
-                    <Route exact path="/">
-                        <HomePage
+            <Switch>
+                <Route exact path="/">
+                    <HomePage
+                        userFullName={userFullName}
+                        fileInputChange={fileInputChange}
+                        userProfilePicture={userProfilePicture}
+                        modalVisibility={modalVisibility}
+                        profileClick={profileClick}
+                        profileSettingsClick={profileSettingsClick}
+                        profileLogOutClick={profileLogOutClick}
+                        pageTravelClick={() => history.push('/library')}
+                        currUser={currUser}
+                    />
+                </Route>
+
+                {
+                    // Protected Route for /library
+                    // User cannot go to their library if they are not 
+                    // logged in
+                    userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
+                    <Route path="/library">
+                        <PhotoLibrary
                             userFullName={userFullName} 
                             fileInputChange={fileInputChange}
-                            setCurrUser={setCurrUser}
-                            userProfilePicture={userProfilePicture}
-                            setUserProfilePicture={setUserProfilePicture}
+                            folderClick={folderClick}
+                            headerClick={headerClick}
+                            images={images}
+                            folders={folders}
+                            modalVisibility={modalVisibility}
+                            profileClick={profileClick}
+                            profileSettingsClick={profileSettingsClick}
+                            profileLogOutClick={profileLogOutClick}
+                            pageTravelClick={() => history.push('/')}
+                            profilePicture={userProfilePicture}
                         />
                     </Route>
-                    {
-                        // Protected route for /login
-                        !userIsLoggedIn() && currUser == '' &&
-                        <Route path="/login">
-                            <LoginModal 
-                                initalLoginState={true} 
-                                setCurrUser={setCurrUser}
-                            />
-                        </Route>
+                }
 
-                    }
-                    {
-                        // Protected Route for /register
-                        !userIsLoggedIn() && currUser == '' &&
-                        <Route path="/register">
-                            <LoginModal 
-                                initalLoginState={false} 
-                                setCurrUser={setCurrUser}
-                            />
-                        </Route>
-                    }
+                {
+                    // Route for /settings
+                    userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
+                    <Route path="/settings">
+                        <ProfileSettings
+                            userFullName={userFullName}
+                            username={currUser}
+                            userProfilePicture={userProfilePicture}
+                            createdAt={createdAt}
+                            profileFileChange={profileFileChange}
+                        />
+                    </Route>
+                }
 
-                    <Redirect to="/" />
-                </Switch>
-            </Router>    
+                {
+                    // Protected route for /login
+                    !userIsLoggedIn() && currUser == '' &&
+                    <Route path="/login">
+                        <LoginModal 
+                            initalLoginState={true} 
+                            setCurrUser={setCurrUser}
+                        />
+                    </Route>
+
+                }
+
+                {
+                    // Protected Route for /register
+                    !userIsLoggedIn() && currUser == '' &&
+                    <Route path="/register">
+                        <LoginModal 
+                            initalLoginState={false} 
+                            setCurrUser={setCurrUser}
+                        />
+                    </Route>
+                }
+
+                {/* If nothing else matches, redirect to home */}
+                <Redirect to="/" />
+            </Switch>
         </div>
     );
 };

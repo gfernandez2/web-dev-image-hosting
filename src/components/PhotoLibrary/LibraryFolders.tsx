@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Ifolder } from '../../services/folderServices';
 
-import '../../styles/ImageFolders.scss';
-
 type foldersProps = {
     folders: Ifolder[];
     onClick: (e: React.MouseEvent<HTMLLIElement>) => void;

@@ -58,8 +58,7 @@
         background-color: base.$color-background-light;
 }
 
-/* Phone Size */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: base.$phone-size) {
     /* Don't display the firstname and lastname because it won't fit */
     .Profile p {
         display: none;
