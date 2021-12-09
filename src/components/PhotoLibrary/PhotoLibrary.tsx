@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState, useRef } from 'react';
+import React, { ChangeEvent, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // Components
@@ -10,13 +10,6 @@ import ImageDetails from './ImageDetails';
 // Services
 import { Iimage } from '../../services/imageServices';
 import { Ifolder } from '../../services/folderServices';
-import { 
-    logoutUser, 
-    userIsLoggedIn, 
-    getCurrUser, 
-    getUserProfilePicture
-} from '../../services/userServices';
-
 
 import '../../styles/PhotoLibrary.scss';
 
@@ -27,10 +20,29 @@ type libraryProps = {
     headerClick: () => void;
     images: Iimage[];
     folders: Ifolder[];
-    setCurrUser: any
+    modalVisibility: boolean;
+    profileClick: () => void;
+    profileSettingsClick: () => void;
+    profileLogOutClick: () => void;
+    pageTravelClick: () => void;
+    profilePicture: string;
 }
 
-const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, images, folders, setCurrUser} : libraryProps): JSX.Element => {
+const PhotoLibrary = ({
+    userFullName, 
+    fileInputChange, 
+    folderClick, 
+    headerClick, 
+    images, 
+    folders, 
+    modalVisibility, 
+    profileClick, 
+    profileLogOutClick, 
+    profileSettingsClick, 
+    pageTravelClick, 
+    profilePicture
+} : libraryProps): JSX.Element => {
+
     const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
 
         //alert('We are planning to implement a detail view for the image, for now, we will just copy the image to your clipboard!'); 
@@ -63,63 +75,15 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
         // }
     };
 
-    const history = useHistory();
-
     /* Refs */
     const selectedImageRef = useRef<HTMLDivElement>(null);
 
     /* State */
-    const [modalVisibility, setModalVisibility] = useState(false);
-    const [pfp, setPfp] = useState('');
     const [imgSelected, setImgSelected] = useState('');
     const [outOfBoundsClick, setOutOfBoundsClick] = useState(false);
     const [imgAlt, setImgAlt] = useState('');
 
     /* Effects */
-
-    // pfp
-    useEffect(() => {
-        (async () => {
-            try {
-                setPfp(await getUserProfilePicture(await getCurrUser()));
-            } catch (error) {
-                console.error(error);
-                setPfp('');
-            }
-        })();
-    }, []);
-
-    // Changes the current user when you click on the profile
-    const profileClick = async () => {
-        if (userIsLoggedIn()) {
-            setModalVisibility(true);
-        } else {
-            // Routes to login
-            history.push('/login');
-        }
-    };
-
-    const profileSettingsClick = () => {
-        history.push('/settings');
-    };
-
-    const profileLogOutClick = async () => {
-        await logoutUser();
-        setCurrUser('');
-        setPfp('');
-
-        setModalVisibility(false);
-
-        // Routes back to the home page
-        history.push('/');
-    };
-
-    /**
-     * Routes to image library page
-     */
-    const pageTravelClick = () => {
-        history.push('/');
-    };
 
     /* Component */
     return (
@@ -132,7 +96,7 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
                 modalVisibility={modalVisibility}
                 profileSettingsClick={profileSettingsClick}
                 logOutClick={profileLogOutClick}
-                profilePicture={pfp}
+                profilePicture={profilePicture}
             />
             <h1 onClick={headerClick}>Your Library</h1>
             <LibraryFolders

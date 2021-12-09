@@ -2,21 +2,43 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
     Switch, 
     Route, 
-    Redirect 
+    Redirect,
+    useHistory,
 } from 'react-router-dom';
 
 // Components
 import HomePage from './components/HomePage/HomePage';
 import PhotoLibrary from './components/PhotoLibrary/PhotoLibrary';
 import LoginModal from './components/LoginModal/LoginModal';
-
-// Services
-import { getImagesByUser, Iimage, postImageByUser } from './services/imageServices';
-import { Ifolder, getFoldersByUser, getImagesFromFolder } from './services/folderServices';
-import { getCurrUser, getFullName, getUserProfilePicture, userIsLoggedIn, getUserCreated, postProfilePicturebyUser } from './services/userServices';
 import ProfileSettings from './components/UserProfile/ProfileSettings';
 
+// Services
+import { 
+    getImagesByUser, 
+    Iimage, 
+    postImageByUser
+} from './services/imageServices';
+
+import { 
+    Ifolder,
+    getFoldersByUser,
+    getImagesFromFolder
+} from './services/folderServices';
+
+import { 
+    getCurrUser,
+    getFullName,
+    getUserProfilePicture,
+    userIsLoggedIn,
+    getUserCreated,
+    postProfilePicturebyUser,
+    logoutUser
+} from './services/userServices';
+
+
 const App = (): JSX.Element => {
+    
+    const history = useHistory();
     
     /* State */
     const [ currUser, setCurrUser ] = useState('');
@@ -25,6 +47,8 @@ const App = (): JSX.Element => {
     const [ folders, setFolders ] = useState<Ifolder[]>([]);
     const [ userProfilePicture, setUserProfilePicture ] = useState('');
     const [ createdAt, setCreatedAt] = useState(new Date());
+
+    const [ modalVisibility, setModalVisibility ] = useState(false);
 
     /* Effects */
 
@@ -100,6 +124,18 @@ const App = (): JSX.Element => {
         })();
     }, [currUser]);
 
+    useEffect(() => {
+        if (currUser !== '')
+            setUserProfilePicture(currUser);
+        else
+            setUserProfilePicture('');
+    }, [currUser]);
+
+    useEffect(() => {
+        if (currUser === '')
+            setModalVisibility(false);  
+    }, [currUser]);
+
     /* Event Listeners */
     const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
         (async () => {
@@ -153,6 +189,25 @@ const App = (): JSX.Element => {
         setUserProfilePicture(newPfp);
     };
 
+    const profileClick = () => {
+        if (currUser !== '')
+            setModalVisibility(true);
+
+        else
+            history.push('/login');
+    };
+
+    const profileSettingsClick = () => {
+        history.push('/settings');
+    };
+
+    const profileLogOutClick = async () => {
+        await logoutUser();
+        setCurrUser('');
+
+        history.push('/');
+    };
+
     return (
         <div className="App">
             <Switch>
@@ -160,9 +215,13 @@ const App = (): JSX.Element => {
                     <HomePage
                         userFullName={userFullName}
                         fileInputChange={fileInputChange}
-                        setCurrUser={setCurrUser}
                         userProfilePicture={userProfilePicture}
-                        setUserProfilePicture={setUserProfilePicture}
+                        modalVisibility={modalVisibility}
+                        profileClick={profileClick}
+                        profileSettingsClick={profileSettingsClick}
+                        profileLogOutClick={profileLogOutClick}
+                        pageTravelClick={() => history.push('/library')}
+                        currUser={currUser}
                     />
                 </Route>
 
@@ -179,7 +238,12 @@ const App = (): JSX.Element => {
                             headerClick={headerClick}
                             images={images}
                             folders={folders}
-                            setCurrUser={setCurrUser}
+                            modalVisibility={modalVisibility}
+                            profileClick={profileClick}
+                            profileSettingsClick={profileSettingsClick}
+                            profileLogOutClick={profileLogOutClick}
+                            pageTravelClick={() => history.push('/')}
+                            profilePicture={userProfilePicture}
                         />
                     </Route>
                 }
