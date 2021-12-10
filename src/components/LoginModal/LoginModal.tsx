@@ -58,7 +58,6 @@ const LoginModal = ({ initalLoginState, setCurrUser }: loginModalProps): JSX.Ele
 
     return (
         <div className="LoginModal">
-
             <h2>
                 {login ? ('Welcome!') : ('Create an account to save and organize photos to a library!')}
             </h2>

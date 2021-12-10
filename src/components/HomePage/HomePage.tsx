@@ -8,6 +8,7 @@ import PageTravel from '../PageTravel';
 import ProfileModal from '../UserProfile/ProfileModal';
 
 import '../../styles/HomePage.scss';
+import { AnimatePresence } from 'framer-motion';
 
 type homeProps = {
     userFullName : string;
@@ -19,6 +20,7 @@ type homeProps = {
     profileLogOutClick: () => void;
     pageTravelClick: () => void;
     currUser: string;
+    setModalVisibility: any;
 }
 
 const HomePage = ({ 
@@ -30,7 +32,8 @@ const HomePage = ({
     profileSettingsClick, 
     profileLogOutClick, 
     pageTravelClick, 
-    currUser 
+    currUser,
+    setModalVisibility
 }: homeProps): JSX.Element => {
     
     // const homePageClickHandler = (e: MouseEvent) => {
@@ -48,6 +51,7 @@ const HomePage = ({
                 profileSettingsClick={profileSettingsClick}
                 logOutClick={profileLogOutClick}
                 profilePicture={userProfilePicture}
+                setModalVisibility={setModalVisibility}
             />}
 
             <div className="top-bar">

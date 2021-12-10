@@ -54,7 +54,8 @@ export async function getImagesFromFolder(
     // Return the data in the Iimage format
     return data.map(elem => {return {
         src: elem.get('imageSrc')._url,
-        alt: elem.get('imageDesc') || ''
+        alt: elem.get('imageDesc') || '',
+        name: elem.get('imageName') || ''
     };});
 }
 
