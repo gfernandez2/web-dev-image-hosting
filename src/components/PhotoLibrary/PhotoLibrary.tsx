@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useRef } from 'react';
+import React, { ChangeEvent, useState, useRef, MouseEvent } from 'react';
 
 // Components
 import ImageGrid from './ImageGrid';
@@ -41,7 +41,7 @@ const PhotoLibrary = ({
     profileLogOutClick, 
     profileSettingsClick, 
     pageTravelClick, 
-    profilePicture
+    profilePicture,
 } : libraryProps): JSX.Element => {
 
     const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
@@ -62,7 +62,6 @@ const PhotoLibrary = ({
         setImgAlt(img_alt);
         setFileName(fileName);
         setImgSelected(image);
-        navigator.clipboard.writeText(image);
     };
 
     /* Refs */
@@ -103,7 +102,6 @@ const PhotoLibrary = ({
                             alt={imgAlt}
                             images={images}
                             setIsFocused={(bool: boolean) => {
-                                console.log(bool);
                                 !bool && setImgSelected('');
                             }}
                         />

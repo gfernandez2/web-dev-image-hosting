@@ -1,6 +1,7 @@
-import React, { useRef, useEffect, MouseEvent } from 'react';
+import React, { useRef, MouseEvent } from 'react';
 import { Iimage } from '../../services/imageServices'; 
-import UploadButton from '../UploadButton';
+
+import { deleteImageByUser } from '../../services/imageServices';
 
 type detailProps = {
     src : string;
@@ -9,7 +10,14 @@ type detailProps = {
     setIsFocused: any;
 }
 
-const ImageDetails = ({ src, alt, images, setIsFocused }: detailProps): JSX.Element => { 
+const ImageDetails = ({ src, alt, images, setIsFocused }: detailProps): JSX.Element => {
+
+
+    const clipboardClick = (e: MouseEvent<HTMLButtonElement>) => {
+
+        alert('Copied to clipboard!');
+        navigator.clipboard.writeText(src);
+    };
 
     const divRef = useRef<HTMLDivElement>(null);
     const clickHandler = (e: MouseEvent<HTMLDivElement>) => {
@@ -20,6 +28,18 @@ const ImageDetails = ({ src, alt, images, setIsFocused }: detailProps): JSX.Elem
         }
 
     };
+
+    const deleteButtonClick = async () => {
+        const choice = confirm('Are you sure you want to delete the image? This \
+action cannot be reversed!');
+
+        if (!choice) return;
+
+        alert('deleting image!');
+        const imgDeletedState = deleteImageByUser(src);
+        console.log('was image deleted?', await imgDeletedState);
+    };
+
 
     return (
         <div className="ImageDetails" onClick={clickHandler}>
@@ -35,7 +55,8 @@ const ImageDetails = ({ src, alt, images, setIsFocused }: detailProps): JSX.Elem
                             <h3>Description</h3>
                             <p>{alt ? alt : 'No description provided.'}</p>
                         </div>
-                        <button>Delete</button>
+                        <button onClick={deleteButtonClick}>Delete</button>
+                        <button onClick={clipboardClick}>Copy to Clipboard</button>
                     </div>
                 </div>
             </div>

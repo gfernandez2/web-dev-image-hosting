@@ -1,8 +1,9 @@
 # TODOs
 
 ## Bugfixes
-- [ ] Clicking anywhere closes the image details view, not ideal
-- [ ] Styling bug on PhotoLibrary
+- [x] Clicking anywhere closes the image details view, not ideal
+- [x] Styling bug on PhotoLibrary
+- [x] Clicking outside the modal will now close it
 
 ## Additions
 - [ ] Animations
@@ -10,7 +11,7 @@
     - [ ] PageTravel
     - [ ] ImageDetails
 - [ ] Mobile Layout
-    - [ ] ImageDetails
+    - [x] ImageDetails
     - [ ] UserProfile
     - [ ] Optimize HomePage, looks kinda ugly to my eye still
 - [ ] Folders

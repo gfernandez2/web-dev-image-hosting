@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, ChangeEvent, useEffect, useState } from 'react';
 import {
     Switch, 
     Route, 
@@ -16,7 +16,8 @@ import ProfileSettings from './components/UserProfile/ProfileSettings';
 import { 
     getImagesByUser, 
     Iimage, 
-    postImageByUser
+    postImageByUser,
+    deleteImageByUser
 } from './services/imageServices';
 
 import { 
