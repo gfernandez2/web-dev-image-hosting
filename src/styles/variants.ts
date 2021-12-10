@@ -7,10 +7,5 @@ export const profileModalVariant =  {
     active: {
         // x: 0,
         opacity: 1
-    },
-
-    exitMotion: {
-        // x: '100%',
-        opacity: 0
     }
 };

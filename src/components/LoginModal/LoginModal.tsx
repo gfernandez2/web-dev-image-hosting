@@ -9,10 +9,11 @@ import '../../styles/LoginModal.scss';
 type loginModalProps = {
     initalLoginState    ?: boolean;
     setCurrUser          : any;
+    showAlert            : (text: string) => void;
 };
 
 
-const LoginModal = ({ initalLoginState, setCurrUser }: loginModalProps): JSX.Element => {
+const LoginModal = ({ initalLoginState, setCurrUser, showAlert }: loginModalProps): JSX.Element => {
 
     const history = useHistory();
 
@@ -74,8 +75,8 @@ const LoginModal = ({ initalLoginState, setCurrUser }: loginModalProps): JSX.Ele
                      * have login selected or register
                      */
                     login
-                        ? (<LoginContent  setCurrUser={setCurrUser} cancelClick={cancelButtonClick}/>)
-                        : (<RegisterContent setCurrUser={setCurrUser} cancelClick={cancelButtonClick}/>)
+                        ? (<LoginContent setCurrUser={setCurrUser} cancelClick={cancelButtonClick} showAlert={showAlert}/>)
+                        : (<RegisterContent setCurrUser={setCurrUser} cancelClick={cancelButtonClick} showAlert={showAlert}/>)
                 }
             </div>
 

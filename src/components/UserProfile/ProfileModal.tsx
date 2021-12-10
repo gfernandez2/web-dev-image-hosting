@@ -49,9 +49,10 @@ const ProfileModal = ({ profilePicture, profileSettingsClick, logOutClick, userF
                 variants={profileModalVariant}
                 initial="initial"
                 animate="active"
-                exit={{
-                    opacity: 0,
-                    x: '100px'
+                exit="initial"
+                transition={{
+                    ease: 'easeInOut',
+                    duration: 0.05
                 }}
             >
                 <ModalUserEntry

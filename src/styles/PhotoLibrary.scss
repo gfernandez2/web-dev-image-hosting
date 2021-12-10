@@ -133,6 +133,7 @@
         flex-flow: row;
         align-items: center;
         justify-content: center;
+        position: relative;
         // max-height: 90vh;
         // overflow-y: scroll;
 
@@ -171,6 +172,27 @@
             button:active    {
                 transform: scale(0.9);
             }
+        }
+
+        .close-icon {
+            color: white;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 2.5em;
+            height: 2.5em;
+            border-radius: 50%;
+            padding: 0.5em;
+            cursor: pointer;
+            transition: all 250ms ease-in-out;
+        }
+
+        .close-icon:hover {
+            background-color: base.$color-background-dark;
+        }
+        
+        .close-icon:active {
+            filter: brightness(1.2);
         }
         
         img {

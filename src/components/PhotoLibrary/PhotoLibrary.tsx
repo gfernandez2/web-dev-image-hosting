@@ -26,6 +26,7 @@ type libraryProps = {
     profileLogOutClick: () => void;
     pageTravelClick: () => void;
     profilePicture: string;
+    showAlert: (text: string) => void;
 }
 
 const PhotoLibrary = ({
@@ -42,6 +43,7 @@ const PhotoLibrary = ({
     profileSettingsClick, 
     pageTravelClick, 
     profilePicture,
+    showAlert
 } : libraryProps): JSX.Element => {
 
     const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
@@ -94,7 +96,7 @@ const PhotoLibrary = ({
                 folders={folders}
                 onClick={folderClick}
             />
-            <div className="photo-area">       
+            <div className="photo-area">
                 {
                     imgSelected != '' && (
                         <ImageDetails 
@@ -104,6 +106,7 @@ const PhotoLibrary = ({
                             setIsFocused={(bool: boolean) => {
                                 !bool && setImgSelected('');
                             }}
+                            showAlert={showAlert}
                         />
                     )
                 }  

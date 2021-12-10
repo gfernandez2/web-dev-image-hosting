@@ -1,5 +1,7 @@
 import React, { useRef, MouseEvent } from 'react';
+import { X } from 'react-feather';
 import { Iimage } from '../../services/imageServices'; 
+import { motion } from 'framer-motion';
 
 import { deleteImageByUser } from '../../services/imageServices';
 
@@ -8,14 +10,15 @@ type detailProps = {
     alt : string;
     images : Iimage[];
     setIsFocused: any;
+    showAlert: (text: string) => void;
 }
 
-const ImageDetails = ({ src, alt, images, setIsFocused }: detailProps): JSX.Element => {
+const ImageDetails = ({ src, alt, images, setIsFocused, showAlert }: detailProps): JSX.Element => {
 
 
     const clipboardClick = (e: MouseEvent<HTMLButtonElement>) => {
 
-        alert('Copied to clipboard!');
+        showAlert('Copied to clipboard!');
         navigator.clipboard.writeText(src);
     };
 
@@ -35,15 +38,23 @@ action cannot be reversed!');
 
         if (!choice) return;
 
-        alert('deleting image!');
-        const imgDeletedState = deleteImageByUser(src);
+        showAlert('Deleting image!');
+        const imgDeletedState = deleteImageByUser(src); 
         console.log('was image deleted?', await imgDeletedState);
     };
 
 
     return (
-        <div className="ImageDetails" onClick={clickHandler}>
+        <motion.div 
+            className="ImageDetails" 
+            onClick={clickHandler}
+            animate={{ opacity: 1}}
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            exit={{ opacity: 1 }}
+        >
             <div className="container" ref={divRef}>
+                <X onClick={() =>  setIsFocused(false)} className="close-icon" />
                 <img src={src} alt={alt} />
                 <div className="image-info">
                     <div className="image-content">
@@ -60,7 +71,7 @@ action cannot be reversed!');
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

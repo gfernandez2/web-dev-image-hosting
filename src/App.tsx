@@ -11,13 +11,13 @@ import HomePage from './components/HomePage/HomePage';
 import PhotoLibrary from './components/PhotoLibrary/PhotoLibrary';
 import LoginModal from './components/LoginModal/LoginModal';
 import ProfileSettings from './components/UserProfile/ProfileSettings';
+import Alert from './components/Alert';
 
 // Services
 import { 
     getImagesByUser, 
     Iimage, 
-    postImageByUser,
-    deleteImageByUser
+    postImageByUser
 } from './services/imageServices';
 
 import { 
@@ -51,6 +51,8 @@ const App = (): JSX.Element => {
     const [ createdAt, setCreatedAt] = useState(new Date());
 
     const [ modalVisibility, setModalVisibility ] = useState(false);
+    const [ alertIsShown, setAlertIsShown ] = useState(false);
+    const [ alertText, setAlertText ] = useState('');
 
     /* Effects */
 
@@ -63,6 +65,7 @@ const App = (): JSX.Element => {
                 if (user)
                     setCurrUser(user);
             } catch (error) {
+                showAlert('Login Error!');
                 console.error('Login Error: ', error);
             }
         })();
@@ -139,6 +142,22 @@ const App = (): JSX.Element => {
     }, [currUser]);
 
     /* Event Listeners */
+
+    const showAlert = (text: string) => {
+        setAlertText(text);
+        setAlertIsShown(true);
+
+        setTimeout(() => {
+            setAlertIsShown(false);
+            setAlertText('');
+        }, 5 * 1000);
+    };
+
+    const alertOnClick = () => {
+        setAlertIsShown(false);
+        setAlertText('');
+    };
+
     const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
         (async () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -155,6 +174,10 @@ const App = (): JSX.Element => {
         const newImages = [];
 
         if (!files) return;
+        if (currUser == '') {
+            showAlert('You are not logged in!');
+            return;
+        }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -169,16 +192,18 @@ const App = (): JSX.Element => {
         }  
         // Update the images state
         setImages([...images, ...newImages] );
+        showAlert('Uploaded New image!');
     };
 
     const headerClick = async () => {
 
-        if (!userIsLoggedIn() || currUser != '') {
+        if (!userIsLoggedIn() || currUser == '') {
             return;
         }
 
         const imgs = await getImagesByUser(currUser);
         setImages(imgs);
+        showAlert('Viewing base library');
     };
 
     const profileFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -189,6 +214,7 @@ const App = (): JSX.Element => {
         const img = files[0];
         const newPfp = await postProfilePicturebyUser(currUser, img);
         setUserProfilePicture(newPfp);
+        showAlert('Profile Picture updated!');
     };
 
     const profileClick = () => {
@@ -209,10 +235,13 @@ const App = (): JSX.Element => {
         setCurrUser('');
 
         history.push('/');
+        showAlert('Successfully Logged out!');
     };
 
     return (
         <div className="App">
+            {alertIsShown && <Alert text={alertText} onClick={alertOnClick}/>}
+
             <AnimatePresence exitBeforeEnter>
                 <Switch>
                     <Route exact path="/">
@@ -250,6 +279,7 @@ const App = (): JSX.Element => {
                                 pageTravelClick={() => history.push('/')}
                                 profilePicture={userProfilePicture}
                                 setModalVisibility={setModalVisibility}
+                                showAlert={showAlert}
                             />
                         </Route>
                     }
@@ -275,6 +305,7 @@ const App = (): JSX.Element => {
                             <LoginModal 
                                 initalLoginState={true} 
                                 setCurrUser={setCurrUser}
+                                showAlert={showAlert}
                             />
                         </Route>
 
@@ -287,6 +318,7 @@ const App = (): JSX.Element => {
                             <LoginModal 
                                 initalLoginState={false} 
                                 setCurrUser={setCurrUser}
+                                showAlert={showAlert}
                             />
                         </Route>
                     }

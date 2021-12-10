@@ -34,3 +34,27 @@
         font-weight: normal;
     }
 }
+
+@media screen and (max-width: base.$tablet-size) {
+    .ProfileSettings {
+        .profile-info-container {
+            margin-left: 1em;
+        }
+    }
+}
+
+@media screen and (max-width: base.$phone-size) {
+    .ProfileSettings {
+        padding: 1em;
+        flex-flow: column;
+        
+        h1, 
+        h2 {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+    }
+}
