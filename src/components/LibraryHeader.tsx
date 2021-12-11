@@ -17,9 +17,10 @@ type headerProps = {
     profileSettingsClick: any;
     logOutClick: any;
     profilePicture: string;
+    setModalVisibility: any;
 }
 
-const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profileClick, modalVisibility, profileSettingsClick, logOutClick, profilePicture,  } : headerProps): JSX.Element => {
+const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profileClick, modalVisibility, profileSettingsClick, logOutClick, profilePicture, setModalVisibility } : headerProps): JSX.Element => {
     
     return (
         <header className="LibraryHeader">
@@ -38,6 +39,7 @@ const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profile
                 profileSettingsClick={profileSettingsClick}
                 logOutClick={logOutClick}
                 profilePicture={profilePicture}
+                setModalVisibility={setModalVisibility}
             />}
 
             <Profile userFullName={userFullName} onClick={profileClick} profilePicture={profilePicture} />

@@ -1,10 +1,10 @@
-import React, { ChangeEvent, useState, useRef } from 'react';
+import React, { ChangeEvent, useState, MouseEvent } from 'react';
 
 // Components
 import ImageGrid from './ImageGrid';
 import LibraryHeader from '../LibraryHeader';
 import LibraryFolders from './LibraryFolders';
-import ImageDetailsRef from './ImageDetails';
+import ImageDetails from './ImageDetails';
 
 // Services
 import { Iimage } from '../../services/imageServices';
@@ -20,11 +20,13 @@ type libraryProps = {
     images: Iimage[];
     folders: Ifolder[];
     modalVisibility: boolean;
+    setModalVisibility: any;
     profileClick: () => void;
     profileSettingsClick: () => void;
     profileLogOutClick: () => void;
     pageTravelClick: () => void;
     profilePicture: string;
+    showAlert: (text: string) => void;
 }
 
 const PhotoLibrary = ({
@@ -35,11 +37,13 @@ const PhotoLibrary = ({
     images, 
     folders, 
     modalVisibility, 
+    setModalVisibility,
     profileClick, 
     profileLogOutClick, 
     profileSettingsClick, 
     pageTravelClick, 
-    profilePicture
+    profilePicture,
+    showAlert
 } : libraryProps): JSX.Element => {
 
     const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
@@ -52,36 +56,23 @@ const PhotoLibrary = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const img_alt = e.target.alt;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const fileName = e.target.key;
         
-        console.log(img_alt);
+        console.log(fileName);
         setImgAlt(img_alt);
+        setFileName(fileName);
         setImgSelected(image);
-        navigator.clipboard.writeText(image);
-    };
-    
-    //onClick for photo-area
-    const areaClick = (e : React.MouseEvent<HTMLDivElement>) => {
-        // if(outOfBoundsClick){
-        //     //
-        // }
-        // if(imgSelected == ''){
-        //     return;
-        // }
-        // // e.stopPropagation();
-        // if(e.target != selectedImageRef.current){
-        //     console.log(e.target, selectedImageRef.current);
-            
-        //     setImgSelected('');
-        // }
     };
 
-    /* Refs */
-    const selectedImageRef = useRef<HTMLDivElement>(null);
 
     /* State */
     const [imgSelected, setImgSelected] = useState('');
-    const [outOfBoundsClick, setOutOfBoundsClick] = useState(false);
     const [imgAlt, setImgAlt] = useState('');
+
+
+    const [, setFileName] = useState('');
 
     /* Effects */
 
@@ -97,22 +88,24 @@ const PhotoLibrary = ({
                 profileSettingsClick={profileSettingsClick}
                 logOutClick={profileLogOutClick}
                 profilePicture={profilePicture}
+                setModalVisibility={setModalVisibility}
             />
             <h1 onClick={headerClick}>Your Library</h1>
             <LibraryFolders
                 folders={folders}
                 onClick={folderClick}
             />
-            <div className="photo-area">       
+            <div className="photo-area">
                 {
                     imgSelected != '' && (
-                        <ImageDetailsRef 
+                        <ImageDetails 
                             src={imgSelected} 
                             alt={imgAlt}
+                            images={images}
                             setIsFocused={(bool: boolean) => {
-                                console.log(bool);
                                 !bool && setImgSelected('');
                             }}
+                            showAlert={showAlert}
                         />
                     )
                 }  

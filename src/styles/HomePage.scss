@@ -12,7 +12,6 @@
         top: 1em;
         z-index: 2;
 
-        // FIXME: Currently not animating
         transition: all 1000ms ease-in-out;
     }
 
@@ -56,6 +55,17 @@
         align-items: center;
         justify-content: center;
         border-radius: 4px;
+        cursor: pointer;
+        transition: border 500ms ease-in-out, box-shadow 100ms ease-in-out;
+    }
+
+    .drag-area:hover {
+        border: 5px solid base.$color-accent;
+    }
+    
+    .drag-area:active {
+        // transform: translateY(-10px);
+        box-shadow: 0 0 10px black;
     }
 
     p {
@@ -71,3 +81,4 @@
         }
     }
 }
+

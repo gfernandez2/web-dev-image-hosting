@@ -7,9 +7,10 @@ type registerContentProps = {
     // registerClick: () => void;
     cancelClick: (e: MouseEvent<HTMLButtonElement>) => void;
     setCurrUser: any;
+    showAlert: (text: string) => void;
 };
 
-const RegisterContent = ({ setCurrUser, cancelClick }: registerContentProps): JSX.Element => {
+const RegisterContent = ({ setCurrUser, cancelClick, showAlert }: registerContentProps): JSX.Element => {
 
     const firstNameRef = useRef<HTMLInputElement>(null);
     const lastNameRef  = useRef<HTMLInputElement>(null);
@@ -29,7 +30,7 @@ const RegisterContent = ({ setCurrUser, cancelClick }: registerContentProps): JS
             await createUser(fname, lname, email, pword);
             setCurrUser(await getCurrUser());
             history.push('/');
-            
+            showAlert(`Registered as ${await getCurrUser()}!`);
         }
     };
 

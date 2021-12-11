@@ -11,6 +11,7 @@ import HomePage from './components/HomePage/HomePage';
 import PhotoLibrary from './components/PhotoLibrary/PhotoLibrary';
 import LoginModal from './components/LoginModal/LoginModal';
 import ProfileSettings from './components/UserProfile/ProfileSettings';
+import Alert from './components/Alert';
 
 // Services
 import { 
@@ -34,6 +35,7 @@ import {
     postProfilePicturebyUser,
     logoutUser
 } from './services/userServices';
+import { AnimatePresence } from 'framer-motion';
 
 
 const App = (): JSX.Element => {
@@ -49,6 +51,8 @@ const App = (): JSX.Element => {
     const [ createdAt, setCreatedAt] = useState(new Date());
 
     const [ modalVisibility, setModalVisibility ] = useState(false);
+    const [ alertIsShown, setAlertIsShown ] = useState(false);
+    const [ alertText, setAlertText ] = useState('');
 
     /* Effects */
 
@@ -61,6 +65,7 @@ const App = (): JSX.Element => {
                 if (user)
                     setCurrUser(user);
             } catch (error) {
+                showAlert('Login Error!');
                 console.error('Login Error: ', error);
             }
         })();
@@ -137,6 +142,22 @@ const App = (): JSX.Element => {
     }, [currUser]);
 
     /* Event Listeners */
+
+    const showAlert = (text: string) => {
+        setAlertText(text);
+        setAlertIsShown(true);
+
+        setTimeout(() => {
+            setAlertIsShown(false);
+            setAlertText('');
+        }, 5 * 1000);
+    };
+
+    const alertOnClick = () => {
+        setAlertIsShown(false);
+        setAlertText('');
+    };
+
     const folderClick = (e: React.MouseEvent<HTMLLIElement>) => {
         (async () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -153,6 +174,10 @@ const App = (): JSX.Element => {
         const newImages = [];
 
         if (!files) return;
+        if (currUser == '') {
+            showAlert('You are not logged in!');
+            return;
+        }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -167,16 +192,18 @@ const App = (): JSX.Element => {
         }  
         // Update the images state
         setImages([...images, ...newImages] );
+        showAlert('Uploaded New image!');
     };
 
     const headerClick = async () => {
 
-        if (!userIsLoggedIn() || currUser != '') {
+        if (!userIsLoggedIn() || currUser == '') {
             return;
         }
 
         const imgs = await getImagesByUser(currUser);
         setImages(imgs);
+        showAlert('Viewing base library');
     };
 
     const profileFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -187,17 +214,19 @@ const App = (): JSX.Element => {
         const img = files[0];
         const newPfp = await postProfilePicturebyUser(currUser, img);
         setUserProfilePicture(newPfp);
+        showAlert('Profile Picture updated!');
     };
 
     const profileClick = () => {
         if (currUser !== '')
-            setModalVisibility(true);
+            setModalVisibility((prev) => !prev);
 
         else
             history.push('/login');
     };
 
     const profileSettingsClick = () => {
+        setModalVisibility(false);
         history.push('/settings');
     };
 
@@ -206,88 +235,98 @@ const App = (): JSX.Element => {
         setCurrUser('');
 
         history.push('/');
+        showAlert('Successfully Logged out!');
     };
 
     return (
         <div className="App">
-            <Switch>
-                <Route exact path="/">
-                    <HomePage
-                        userFullName={userFullName}
-                        fileInputChange={fileInputChange}
-                        userProfilePicture={userProfilePicture}
-                        modalVisibility={modalVisibility}
-                        profileClick={profileClick}
-                        profileSettingsClick={profileSettingsClick}
-                        profileLogOutClick={profileLogOutClick}
-                        pageTravelClick={() => history.push('/library')}
-                        currUser={currUser}
-                    />
-                </Route>
+            {alertIsShown && <Alert text={alertText} onClick={alertOnClick}/>}
 
-                {
-                    // Protected Route for /library
-                    // User cannot go to their library if they are not 
-                    // logged in
-                    userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
-                    <Route path="/library">
-                        <PhotoLibrary
-                            userFullName={userFullName} 
+            <AnimatePresence exitBeforeEnter>
+                <Switch>
+                    <Route exact path="/">
+                        <HomePage
+                            userFullName={userFullName}
                             fileInputChange={fileInputChange}
-                            folderClick={folderClick}
-                            headerClick={headerClick}
-                            images={images}
-                            folders={folders}
+                            userProfilePicture={userProfilePicture}
                             modalVisibility={modalVisibility}
                             profileClick={profileClick}
                             profileSettingsClick={profileSettingsClick}
                             profileLogOutClick={profileLogOutClick}
-                            pageTravelClick={() => history.push('/')}
-                            profilePicture={userProfilePicture}
-                        />
-                    </Route>
-                }
-
-                {
-                    // Route for /settings
-                    userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
-                    <Route path="/settings">
-                        <ProfileSettings
-                            userFullName={userFullName}
-                            username={currUser}
-                            userProfilePicture={userProfilePicture}
-                            createdAt={createdAt}
-                            profileFileChange={profileFileChange}
-                        />
-                    </Route>
-                }
-
-                {
-                    // Protected route for /login
-                    !userIsLoggedIn() && currUser == '' &&
-                    <Route path="/login">
-                        <LoginModal 
-                            initalLoginState={true} 
-                            setCurrUser={setCurrUser}
+                            pageTravelClick={() => history.push('/library')}
+                            currUser={currUser}
+                            setModalVisibility={setModalVisibility}
                         />
                     </Route>
 
-                }
+                    {
+                        // Protected Route for /library
+                        // User cannot go to their library if they are not 
+                        // logged in
+                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
+                        <Route path="/library">
+                            <PhotoLibrary
+                                userFullName={userFullName} 
+                                fileInputChange={fileInputChange}
+                                folderClick={folderClick}
+                                headerClick={headerClick}
+                                images={images}
+                                folders={folders}
+                                modalVisibility={modalVisibility}
+                                profileClick={profileClick}
+                                profileSettingsClick={profileSettingsClick}
+                                profileLogOutClick={profileLogOutClick}
+                                pageTravelClick={() => history.push('/')}
+                                profilePicture={userProfilePicture}
+                                setModalVisibility={setModalVisibility}
+                                showAlert={showAlert}
+                            />
+                        </Route>
+                    }
 
-                {
-                    // Protected Route for /register
-                    !userIsLoggedIn() && currUser == '' &&
-                    <Route path="/register">
-                        <LoginModal 
-                            initalLoginState={false} 
-                            setCurrUser={setCurrUser}
-                        />
-                    </Route>
-                }
+                    {
+                        // Route for /settings
+                        userIsLoggedIn() && (async () => setCurrUser(await getCurrUser()))() &&
+                        <Route path="/settings">
+                            <ProfileSettings
+                                userFullName={userFullName}
+                                username={currUser}
+                                userProfilePicture={userProfilePicture}
+                                createdAt={createdAt}
+                                profileFileChange={profileFileChange}
+                            />
+                        </Route>
+                    }
 
-                {/* If nothing else matches, redirect to home */}
-                <Redirect to="/" />
-            </Switch>
+                    {
+                        // Protected route for /login
+                        !userIsLoggedIn() && currUser == '' &&
+                        <Route path="/login">
+                            <LoginModal 
+                                initalLoginState={true} 
+                                setCurrUser={setCurrUser}
+                                showAlert={showAlert}
+                            />
+                        </Route>
+
+                    }
+
+                    {
+                        // Protected Route for /register
+                        !userIsLoggedIn() && currUser == '' &&
+                        <Route path="/register">
+                            <LoginModal 
+                                initalLoginState={false} 
+                                setCurrUser={setCurrUser}
+                                showAlert={showAlert}
+                            />
+                        </Route>
+                    }
+
+                    {/* If nothing else matches, redirect to home */}
+                    <Redirect to="/" />
+                </Switch>
+            </AnimatePresence>
         </div>
     );
 };
