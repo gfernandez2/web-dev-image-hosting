@@ -16,7 +16,7 @@ type detailProps = {
 const ImageDetails = ({ src, alt, images, setIsFocused, showAlert }: detailProps): JSX.Element => {
 
 
-    const clipboardClick = (e: MouseEvent<HTMLButtonElement>) => {
+    const clipboardClick = () => {
 
         showAlert('Copied to clipboard!');
         navigator.clipboard.writeText(src);

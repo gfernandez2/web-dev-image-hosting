@@ -8,7 +8,6 @@ import PageTravel from '../PageTravel';
 import ProfileModal from '../UserProfile/ProfileModal';
 
 import '../../styles/HomePage.scss';
-import { AnimatePresence } from 'framer-motion';
 
 type homeProps = {
     userFullName : string;

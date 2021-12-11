@@ -1,6 +1,6 @@
 import React, {MouseEvent, useRef} from 'react';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { profileModalVariant } from '../../styles/variants';
 import '../../styles/ProfileModal.scss';
 

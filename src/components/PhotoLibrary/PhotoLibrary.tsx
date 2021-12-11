@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useRef, MouseEvent } from 'react';
+import React, { ChangeEvent, useState, MouseEvent } from 'react';
 
 // Components
 import ImageGrid from './ImageGrid';
@@ -66,14 +66,13 @@ const PhotoLibrary = ({
         setImgSelected(image);
     };
 
-    /* Refs */
-    const selectedImageRef = useRef<HTMLDivElement>(null);
 
     /* State */
     const [imgSelected, setImgSelected] = useState('');
-    const [outOfBoundsClick, setOutOfBoundsClick] = useState(false);
     const [imgAlt, setImgAlt] = useState('');
-    const [fileName, setFileName] = useState('');
+
+
+    const [, setFileName] = useState('');
 
     /* Effects */
 
