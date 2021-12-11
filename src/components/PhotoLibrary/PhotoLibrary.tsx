@@ -48,8 +48,6 @@ const PhotoLibrary = ({
 
     const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
 
-        //alert('We are planning to implement a detail view for the image, for now, we will just copy the image to your clipboard!'); 
-
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const image = e.target.src;
@@ -70,11 +68,7 @@ const PhotoLibrary = ({
     /* State */
     const [imgSelected, setImgSelected] = useState('');
     const [imgAlt, setImgAlt] = useState('');
-
-
     const [, setFileName] = useState('');
-
-    /* Effects */
 
     /* Component */
     return (

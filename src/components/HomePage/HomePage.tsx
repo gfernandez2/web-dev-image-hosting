@@ -34,14 +34,6 @@ const HomePage = ({
     currUser,
     setModalVisibility
 }: homeProps): JSX.Element => {
-    
-    // const homePageClickHandler = (e: MouseEvent) => {
-    //     if (modalVisibility) {
-    //         //
-    //     }
-    // };
-
-    /* Component */
     return (
         <div className="HomePage">
             

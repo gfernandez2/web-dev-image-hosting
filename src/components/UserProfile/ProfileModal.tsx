@@ -45,7 +45,6 @@ const ProfileModal = ({ profilePicture, profileSettingsClick, logOutClick, userF
     return (
         <div className="ProfileModal-background" onClick={onModalBackgroundClick}>
             <motion.div ref={modalRef} className="ProfileModal"
-                // key="profile-modal"
                 variants={profileModalVariant}
                 initial="initial"
                 animate="active"

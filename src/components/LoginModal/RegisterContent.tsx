@@ -3,8 +3,6 @@ import { useHistory } from 'react-router';
 import { createUser, getCurrUser } from '../../services/userServices';
 
 type registerContentProps = {
-
-    // registerClick: () => void;
     cancelClick: (e: MouseEvent<HTMLButtonElement>) => void;
     setCurrUser: any;
     showAlert: (text: string) => void;

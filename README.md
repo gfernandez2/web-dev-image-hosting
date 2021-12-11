@@ -69,7 +69,7 @@ We tested with the same accounts as before. They are listed in the table below:
 | srodrig9        | 1234            | Contains multiple images and even folders.|
 | gfernan2        | 1234            | Contains a smaller amount of images       |
 | mwicks@nd.edu   | 1234            | No images                                 |
-| pbui@nd.edu     | 1234            | Also no images                            |
+| pbui@nd.edu     | 1234            | Contains images (of Bui)                  |
 
 
 ------------------

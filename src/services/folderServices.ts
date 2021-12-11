@@ -58,10 +58,3 @@ export async function getImagesFromFolder(
         name: elem.get('imageName') || ''
     };});
 }
-
-/* TODO: implement in future features */
-// export async function putImageInFolder(
-//     username: string, folderId: string, imageId: string): Promise<boolean> {
-
-//     throw new Error('Not yet implemented');
-// }
