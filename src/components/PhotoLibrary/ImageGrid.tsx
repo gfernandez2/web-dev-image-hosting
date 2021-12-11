@@ -1,7 +1,5 @@
 import React from 'react';
 
-import '../../styles/ImageGrid.scss';
-
 import { Iimage } from '../../services/imageServices';
 
 import ImageItem from './ImageItem';

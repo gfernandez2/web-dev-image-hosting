@@ -7,9 +7,10 @@ import { getCurrUser, loginUser } from '../../services/userServices';
 type loginContentProps = {    
     setCurrUser: any;
     cancelClick: (e: MouseEvent<HTMLButtonElement>) => void;
+    showAlert: (text: string) => void;
 };
 
-const LoginContent = ({ setCurrUser, cancelClick }: loginContentProps): JSX.Element => {
+const LoginContent = ({ setCurrUser, cancelClick, showAlert }: loginContentProps): JSX.Element => {
 
     const history = useHistory();
 
@@ -32,9 +33,12 @@ const LoginContent = ({ setCurrUser, cancelClick }: loginContentProps): JSX.Elem
             if (isLoggedIn) {
                 setCurrUser(await getCurrUser());
                 history.push('/');
+                showAlert(`Successfully logged in as ${await getCurrUser()}`);
             }
-            else
-                alert('Unable to log in!');
+            else {
+                // alert('Unable to log in!');
+                showAlert('Unable to log in!');
+            }
         }
     };
 

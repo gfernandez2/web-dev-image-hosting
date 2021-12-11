@@ -13,7 +13,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 35rem;
+    min-width: 35rem;
     min-height: 45rem;
     border-radius: 4px;
 
@@ -39,8 +39,6 @@
             color: white;
             font-family: base.$font-secondary;
             font-size: 20px;
-            // font-weight: bold;
-    
             margin-bottom: 2em;
     
             p {
@@ -121,6 +119,20 @@
             background: base.$color-accent;
         }
     }
-
-
 }
+
+@media screen and (max-width: base.$tablet-size){
+        .LoginModal {
+            width: 100vw;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            min-width: 0;
+
+            .container {
+                padding: 0 1em;
+                margin: 0;
+                width: 100%;
+            }
+        }
+    }

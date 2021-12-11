@@ -6,6 +6,8 @@ import { getIdFromUsername } from './userServices';
 export interface Iimage {
     src: string
     alt: string
+    name: string
+    id ?: string
 }
 
 /* GET Requests */
@@ -20,7 +22,9 @@ export async function getAllImages(): Promise<Iimage[]> {
     // return in Iimage format
     const images = data.map(elem => { return {
         src: elem.get('imageSrc')._url,
-        alt: elem.get('imageDesc') || ''
+        alt: elem.get('imageDesc') || '',
+        name: elem.get('imageName') || '',
+        id: elem.id
     };});
 
     return images;
@@ -48,7 +52,8 @@ export async function getImageByUser(
 
     return {
         src: result.get('imageSrc')._url,
-        alt: result.get('image') || ''
+        alt: result.get('image') || '',
+        name: result.get('imageName') || ''
     };
 
 }
@@ -74,11 +79,15 @@ export async function getImagesByUser(username: string): Promise<Iimage[]> {
     
     const data = await query.find();
 
+
     // Return data in Iimage format
-    return data.map(elem => { return {
-        src: elem.get('imageSrc')._url,
-        alt: elem.get('imageDesc') || ''
-    };});
+    return data.map(elem => { 
+        return {
+            src: elem.get('imageSrc')._url,
+            alt: elem.get('imageDesc') || '',
+            name: elem.get('imageName') || '',
+            id: elem.id
+        };});
 }
 
 /* POST Requests */
@@ -93,6 +102,7 @@ export async function postImageByUser(
     const Photo = Parse.Object.extend('Photo');
     const photo = new Photo();
 
+    photo.set('imageName', image.name);
     photo.set('imageSrc', parseFile);
     photo.set('imageDesc', undefined);
     photo.set('folder', undefined);
@@ -100,24 +110,22 @@ export async function postImageByUser(
 
     await photo.save();
 
-    return {src: parseFile._url, alt: ''};
+    return {src: parseFile._url, alt: '', name: image.name};
 }
 
-/* PUT Requests */
-// export async function putImageByUser(
-//     username: string, 
-//     imageId: string, 
-//     field: string, 
-//     content: string
-// ): Promise<Iimage> {
-
-//     throw new Error('Not yet implemented');
-// }
-
 // /* DELETE Requests */
-// export async function deleteImageByUser(
-//     username: string, imageId: string): Promise<boolean> {
-    
-    
-//     throw new Error('Not yet implemented');
-// }
+export async function deleteImageByUser(imageSrc: string): Promise<boolean> {
+
+    const imgId = (await getAllImages()).find(img => img.src == imageSrc)?.id;
+
+    if (!imgId) return false;
+
+    console.log(imgId);
+
+    const Photo = Parse.Object.extend('Photo');
+    const query = new Parse.Query(Photo);
+
+    (await query.get(imgId)).destroy();
+
+    return true;
+}

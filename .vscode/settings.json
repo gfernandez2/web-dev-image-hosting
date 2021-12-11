@@ -13,6 +13,7 @@
 
     // Tabstop settings
     "editor.tabSize": 4,
-    "editor.insertSpaces": true
+    "editor.insertSpaces": true,
+    "cmake.configureOnOpen": false
 
 }

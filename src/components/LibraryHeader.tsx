@@ -5,16 +5,22 @@ import '../styles/LibraryHeader.scss';
 
 import UploadButton from '../components/UploadButton';
 import PageTravel from '../components/PageTravel';
-import Profile from '../components/Profile';
+import Profile from './UserProfile/Profile';
+import ProfileModal from './UserProfile/ProfileModal';
 
 type headerProps = {
     userFullName : string;
     fileInputChange : (e : ChangeEvent<HTMLInputElement>) => Promise<void>;
     pageTravelClick : MouseEventHandler
     profileClick : MouseEventHandler<HTMLDivElement>;
+    modalVisibility: boolean;
+    profileSettingsClick: any;
+    logOutClick: any;
+    profilePicture: string;
+    setModalVisibility: any;
 }
 
-const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profileClick } : headerProps): JSX.Element => {
+const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profileClick, modalVisibility, profileSettingsClick, logOutClick, profilePicture, setModalVisibility } : headerProps): JSX.Element => {
     
     return (
         <header className="LibraryHeader">
@@ -28,7 +34,15 @@ const LibraryHeader = ({ userFullName, fileInputChange, pageTravelClick, profile
                 <ChevronUp />
             </PageTravel>
 
-            <Profile userFullName={userFullName} onClick={profileClick} />
+            {modalVisibility && <ProfileModal
+                userFullName={userFullName}
+                profileSettingsClick={profileSettingsClick}
+                logOutClick={logOutClick}
+                profilePicture={profilePicture}
+                setModalVisibility={setModalVisibility}
+            />}
+
+            <Profile userFullName={userFullName} onClick={profileClick} profilePicture={profilePicture} />
         </header>
     );
 

@@ -1,57 +1,56 @@
 import React, { ChangeEvent } from 'react';
-import { useHistory } from 'react-router-dom';
 import { ChevronDown } from 'react-feather';
 
 // Components
-import Profile from '../Profile';
+import Profile from '../UserProfile/Profile';
 import UploadArea from './UploadArea';
 import PageTravel from '../PageTravel';
-
-// Services
-import { userIsLoggedIn } from '../../services/userServices';
-import { logoutUser } from '../../services/userServices';
+import ProfileModal from '../UserProfile/ProfileModal';
 
 import '../../styles/HomePage.scss';
 
 type homeProps = {
     userFullName : string;
-    fileInputChange : (e : ChangeEvent<HTMLInputElement>) => void;
-    setCurrUser: any
+    fileInputChange: (e : ChangeEvent<HTMLInputElement>) => void;
+    userProfilePicture: string;
+    modalVisibility: boolean;
+    profileClick: () => void;
+    profileSettingsClick: () => void;
+    profileLogOutClick: () => void;
+    pageTravelClick: () => void;
+    currUser: string;
+    setModalVisibility: any;
 }
 
-const HomePage = ({userFullName, fileInputChange, setCurrUser} : homeProps): JSX.Element => {
-    
-    const history = useHistory();
-
-    // Changes the current user when you click on the profile
-    const profileClick = async () => {
-
-        if (userIsLoggedIn()) {
-            alert('Logging out!');
-            await logoutUser();
-            setCurrUser('');
-
-            // Routes back to the home page
-            history.push('/');
-        } else {
-            // Routes to login
-            history.push('/login');
-        }
-    };
-
-    /**
-     * Routes to image library page
-     */
-    const pageTravelClick = () => {
-        history.push('/library');
-    };
-
-    /* Component */
+const HomePage = ({ 
+    userFullName, 
+    fileInputChange, 
+    userProfilePicture, 
+    modalVisibility, 
+    profileClick, 
+    profileSettingsClick, 
+    profileLogOutClick, 
+    pageTravelClick, 
+    currUser,
+    setModalVisibility
+}: homeProps): JSX.Element => {
     return (
         <div className="HomePage">
+            
+            {modalVisibility && <ProfileModal
+                userFullName={userFullName}
+                profileSettingsClick={profileSettingsClick}
+                logOutClick={profileLogOutClick}
+                profilePicture={userProfilePicture}
+                setModalVisibility={setModalVisibility}
+            />}
 
             <div className="top-bar">
-                <Profile userFullName={userFullName} onClick={profileClick} />
+                <Profile 
+                    userFullName={userFullName} 
+                    onClick={profileClick} 
+                    profilePicture={userProfilePicture}
+                />
             </div>
 
             <UploadArea onChange={fileInputChange}>
@@ -63,7 +62,7 @@ const HomePage = ({userFullName, fileInputChange, setCurrUser} : homeProps): JSX
                  * The button to travel to the library will only show if the
                  * user is logged in
                  */
-                userIsLoggedIn() &&
+                currUser !== '' &&
                 <PageTravel id="travel-down" onClick={pageTravelClick}>
                     <ChevronDown />
                 </PageTravel>

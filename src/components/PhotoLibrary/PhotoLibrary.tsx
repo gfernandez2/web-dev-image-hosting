@@ -1,17 +1,16 @@
-import React, { ChangeEvent } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { ChangeEvent, useState, MouseEvent } from 'react';
 
 // Components
 import ImageGrid from './ImageGrid';
 import LibraryHeader from '../LibraryHeader';
 import LibraryFolders from './LibraryFolders';
+import ImageDetails from './ImageDetails';
 
 // Services
 import { Iimage } from '../../services/imageServices';
 import { Ifolder } from '../../services/folderServices';
 
 import '../../styles/PhotoLibrary.scss';
-import { logoutUser, userIsLoggedIn } from '../../services/userServices';
 
 type libraryProps = {
     userFullName : string;
@@ -20,43 +19,56 @@ type libraryProps = {
     headerClick: () => void;
     images: Iimage[];
     folders: Ifolder[];
-    setCurrUser: any
+    modalVisibility: boolean;
+    setModalVisibility: any;
+    profileClick: () => void;
+    profileSettingsClick: () => void;
+    profileLogOutClick: () => void;
+    pageTravelClick: () => void;
+    profilePicture: string;
+    showAlert: (text: string) => void;
 }
 
-const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, images, folders, setCurrUser} : libraryProps): JSX.Element => {
-    const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
+const PhotoLibrary = ({
+    userFullName, 
+    fileInputChange, 
+    folderClick, 
+    headerClick, 
+    images, 
+    folders, 
+    modalVisibility, 
+    setModalVisibility,
+    profileClick, 
+    profileLogOutClick, 
+    profileSettingsClick, 
+    pageTravelClick, 
+    profilePicture,
+    showAlert
+} : libraryProps): JSX.Element => {
 
-        alert('We are planning to implement a detail view for the image, for now, we will just copy the image to your clipboard!'); 
+    const imageClick = (e : React.MouseEvent<HTMLImageElement>) => {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const image = e.target.src;
-        navigator.clipboard.writeText(image);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const img_alt = e.target.alt;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const fileName = e.target.key;
+        
+        console.log(fileName);
+        setImgAlt(img_alt);
+        setFileName(fileName);
+        setImgSelected(image);
     };
 
-    const history = useHistory();
 
-
-    // Changes the current user when you click on the profile
-    const profileClick = async () => {
-
-        if (userIsLoggedIn()) {
-            alert('Logging out!');
-            await logoutUser();
-            setCurrUser('');
-            
-            history.push('/');
-        } else {
-            history.push('/login');
-        }
-    };
-
-    /**
-     * Routes to image library page
-     */
-    const pageTravelClick = () => {
-        history.push('/');
-    };
+    /* State */
+    const [imgSelected, setImgSelected] = useState('');
+    const [imgAlt, setImgAlt] = useState('');
+    const [, setFileName] = useState('');
 
     /* Component */
     return (
@@ -66,13 +78,33 @@ const PhotoLibrary = ({userFullName, fileInputChange, folderClick, headerClick, 
                 fileInputChange={fileInputChange} 
                 pageTravelClick={pageTravelClick}
                 profileClick={profileClick}
+                modalVisibility={modalVisibility}
+                profileSettingsClick={profileSettingsClick}
+                logOutClick={profileLogOutClick}
+                profilePicture={profilePicture}
+                setModalVisibility={setModalVisibility}
             />
             <h1 onClick={headerClick}>Your Library</h1>
             <LibraryFolders
                 folders={folders}
                 onClick={folderClick}
             />
-            <ImageGrid images={images} imageOnClick={imageClick}/>
+            <div className="photo-area">
+                {
+                    imgSelected != '' && (
+                        <ImageDetails 
+                            src={imgSelected} 
+                            alt={imgAlt}
+                            images={images}
+                            setIsFocused={(bool: boolean) => {
+                                !bool && setImgSelected('');
+                            }}
+                            showAlert={showAlert}
+                        />
+                    )
+                }  
+                <ImageGrid images={images} imageOnClick={imageClick} />
+            </div>
         </div>
     );
 };

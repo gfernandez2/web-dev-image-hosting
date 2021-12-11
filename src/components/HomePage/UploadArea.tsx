@@ -1,7 +1,5 @@
 import React, { ChangeEvent, useRef } from 'react';
 
-import '../../styles/UploadArea.scss';
-
 type uploadProps = {
     onChange : (e : ChangeEvent<HTMLInputElement>) => void;
     children : string;
